@@ -7,7 +7,7 @@ public class STLBetServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		resp.setContentType("text/plain");
 		
-		resp.sendRedirect("/pages/home.jsp");
+		resp.sendRedirect("/pages/login.jsp");
 		
 	}
 }
