@@ -10,5 +10,6 @@
     <h1>STLBet</h1>
     <h2>Thierry and Seyyid you are the best team mates in the world !</h2>
     <h2>Sidi ...</h2>
+    <h1>merci Sidi :)</h1>
 </body>
 </html>
