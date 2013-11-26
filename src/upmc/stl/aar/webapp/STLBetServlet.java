@@ -6,7 +6,7 @@ import javax.servlet.http.*;
 public class STLBetServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		resp.setContentType("text/plain");
-		
+		//test
 		resp.sendRedirect("/pages/login.jsp");
 		
 	}
