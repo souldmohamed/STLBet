@@ -94,6 +94,7 @@ public enum Dao {
   }
   
 
+  @SuppressWarnings("unchecked")
   public void saveCurrencyRates(String p_rates) {
 	  CurrencyRates rates=null;
 	  synchronized (this) {
