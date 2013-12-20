@@ -20,7 +20,7 @@
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script>
      $.ajax({
-    url: 'http://localhost:8888/getCurrecies',
+    url: '/getCurrecies',
     dataType: 'json',
     success: function(myJSON) {
        
@@ -29,7 +29,7 @@
         currencies.append(
         		'<div class="headline">Today Rates</div>'+
         		'Base :'+myJSON.base + '<br>'+
-        		'Timstamp :'+myJSON.timestamp + '<br>'+
+        		'Timstamp :'+new Date(myJSON.timestamp) + '<br>'+
         		'<table border="1">'+
         		'<tr><td>EUR</td><td>'+myJSON.rates.EUR+'</td></tr>'+
         		'<tr><td>GBP</td><td>'+myJSON.rates.GBP+'</td></tr>'+
