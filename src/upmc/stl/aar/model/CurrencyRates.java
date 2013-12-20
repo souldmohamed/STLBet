@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import com.google.appengine.api.datastore.Text;
 
+
 @Entity
 public class CurrencyRates {
 	
