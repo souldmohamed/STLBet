@@ -29,7 +29,7 @@
         currencies.append(
         		'<div class="headline">Today Rates</div>'+
         		'Base :'+myJSON.base + '<br>'+
-        		'Timstamp :'+new Date(myJSON.timestamp) + '<br>'+
+        		'Timestamp :'+new Date(myJSON.timestamp) + '<br>'+
         		'<table border="1">'+
         		'<tr><td>EUR</td><td>'+myJSON.rates.EUR+'</td></tr>'+
         		'<tr><td>GBP</td><td>'+myJSON.rates.GBP+'</td></tr>'+
