@@ -33,7 +33,7 @@ public class CreateBet extends HttpServlet {
     
     Dao.INSTANCE.addBet(user.getUserId(), type, quantity, rate,currency,term);
    
-    resp.sendRedirect("/pages/STLBetApplication.jsp");
+    resp.sendRedirect("login");
     
   }
 

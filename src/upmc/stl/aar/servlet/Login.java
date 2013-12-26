@@ -1,22 +1,58 @@
 package upmc.stl.aar.servlet;
 
 import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.ServletContext;
 import javax.servlet.http.*;
+
+import upmc.stl.aar.dao.Dao;
+import upmc.stl.aar.model.CurrencyRatesParser;
+import upmc.stl.aar.model.Player;
+import upmc.stl.aar.model.ProductBet;
+
+import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.labs.repackaged.org.json.JSONException;
 
 @SuppressWarnings("serial")
 public class Login extends HttpServlet {
 
-	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		UserService userService = UserServiceFactory.getUserService();
-		String url = userService.createLoginURL(req.getRequestURI());
-		if (req.getUserPrincipal() != null) { 
-			resp.sendRedirect("/pages/STLBetApplication.jsp");
-		}else{ 
-			resp.sendRedirect(url);
-		    
-		} 
-	}
+	public void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
 	
+		UserService userService = UserServiceFactory.getUserService();
+		
+		if (req.getUserPrincipal() != null) {
+			ServletContext ctx = req.getSession().getServletContext();
+			User user = userService.getCurrentUser();
+			
+			Dao dao = Dao.INSTANCE;
+			
+			CurrencyRatesParser crp = new CurrencyRatesParser();
+			try {
+				System.out.println("Beginning");
+				crp.getCurrencyRates();
+				System.out.println("Done");
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			List<ProductBet> bets = dao.getBets(user.getUserId());
+			List<ProductBet> historybets = dao.getHistoryBets(user.getUserId());
+			Player player = dao.getPlayer(user.getUserId());
+			
+			ctx.setAttribute("Cbets", bets);
+			ctx.setAttribute("Hbets", historybets);
+			ctx.setAttribute("Player", player);
+			
+			ctx.setAttribute("Logout", userService.createLogoutURL(req.getRequestURI()));
+			System.out.println("before redirect");
+			resp.sendRedirect("pages/STLBetApplication.jsp");
+		} else {
+			resp.sendRedirect(userService.createLoginURL(req.getRequestURI()));
+		}
+	}
 }

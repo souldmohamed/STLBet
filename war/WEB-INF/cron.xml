@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cronentries>
-  <cron>
-    <url>/calculategain</url>
-    <description>calculate gain the cache every 1 hour</description>
-    <!--schedule>every 2 minutes</schedule-->
-    <schedule>every 2 hours</schedule>
-  </cron>
-  <cron>
-    <url>/getCurreciesCron</url>
-    <description>getCurrecies from API Openexchangerates every 1 hour</description>
-    <schedule>every 1 hours</schedule>
-  </cron>
+	<cron>
+		<url>/calculategain</url>
+		<description>calculate gain the cache every 1 hour</description>
+		<!--schedule>every 2 minutes</schedule -->
+		<schedule>every 2 hours</schedule>
+	</cron>
+	<cron>
+		<url>/getCurrenciesCron</url>
+		<description>getCurrencies from API Openexchangerates every 1 hour
+		</description>
+		<schedule>every 1 hours</schedule>
+	</cron>
+	<cron>
+		<url>/DailyCredit</url>
+		<description>Player can receive credits on a daily basis to keep on playing</description>
+		<schedule>every day 00:00</schedule>
+	</cron>
 </cronentries>

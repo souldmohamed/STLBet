@@ -13,6 +13,7 @@ public class CurrencyRates {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	private Text rates;
 
 	public CurrencyRates(Text rates) {
