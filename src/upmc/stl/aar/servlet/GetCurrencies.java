@@ -31,36 +31,4 @@ public class GetCurrencies extends HttpServlet {
 		out.close();
 	}
 	
-	// HTTP GET request
-	private String sendGet() throws Exception {
-	 
-		String url = "http://openexchangerates.org/api/latest.json?app_id=7b689b62ead6401a81006d181eb87730";
-	 
-		URL obj = new URL(url);
-		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-	 
-		// optional default is GET
-		con.setRequestMethod("GET");
-	 
-		//add request header
-		//con.setRequestProperty("User-Agent", USER_AGENT);
-	 
-		int responseCode = con.getResponseCode();
-		System.out.println("\nSending 'GET' request to URL : " + url);
-		System.out.println("Response Code : " + responseCode);
-	 
-		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-		String inputLine;
-		StringBuffer response = new StringBuffer();
-	 
-		while ((inputLine = in.readLine()) != null) {
-			response.append(inputLine);
-		}
-		in.close();
-	 
-		//print result
-		System.out.println(response.toString());
-			
-		return response.toString(); 
-	}
 }
