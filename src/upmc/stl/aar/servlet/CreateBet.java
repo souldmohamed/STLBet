@@ -31,7 +31,7 @@ public class CreateBet extends HttpServlet {
     String currency = checkNull(req.getParameter("currency"));
     String term = checkNull(req.getParameter("term"));
     
-    Dao.INSTANCE.addBet(user.getUserId(), type, quantity, rate,currency,term);
+    Dao.INSTANCE.addBet(user.getUserId(), user.getEmail(), type, quantity, rate,currency,term);
    
     resp.sendRedirect("login");
     

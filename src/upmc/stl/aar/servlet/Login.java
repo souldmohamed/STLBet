@@ -42,7 +42,7 @@ public class Login extends HttpServlet {
 			
 			List<ProductBet> bets = dao.getBets(user.getUserId());
 			List<ProductBet> historybets = dao.getHistoryBets(user.getUserId());
-			Player player = dao.getPlayer(user.getUserId());
+			Player player = dao.getPlayer(user.getUserId(), user.getEmail());
 			
 			ctx.setAttribute("Cbets", bets);
 			ctx.setAttribute("Hbets", historybets);

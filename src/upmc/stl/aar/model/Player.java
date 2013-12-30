@@ -8,14 +8,17 @@ public class Player {
 
 	@Id
 	private String palyerId;
+	
+	private String playerEmail;
 
 	private boolean isEligible = Boolean.FALSE;
 
 	private float balance;
 
-	public Player(String playerId, float balance) {
+	public Player(String playerId, String playerEmail, float balance) {
 		super();
 		this.palyerId = playerId;
+		this.playerEmail = playerEmail;
 		this.balance = balance;
 	}
 
@@ -25,6 +28,10 @@ public class Player {
 
 	public void setPlayerId(String playerId) {
 		this.palyerId = playerId;
+	}
+	
+	public String getPlayerEmail() {
+		return playerEmail;
 	}
 
 	public float getBalance() {

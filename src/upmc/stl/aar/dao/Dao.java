@@ -1,5 +1,6 @@
 package upmc.stl.aar.dao;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 
@@ -13,14 +14,19 @@ import upmc.stl.aar.model.ProductBet;
 
 import com.google.appengine.api.datastore.Text;
 
+import javax.mail.*;
+import javax.mail.internet.*;
+
+import java.util.Properties;
+
 public enum Dao {
 	INSTANCE;
 
-	public void addBet(String userId, String type, String quantity,
+	public void addBet(String userId, String playerEmail, String type, String quantity,
 			String rate, String currency, String term) {
 		synchronized (this) {
 			EntityManager em = EMFService.get().createEntityManager();
-			Player player = getPlayer(userId);
+			Player player = getPlayer(userId, playerEmail);
 			ProductBet bet = new ProductBet(player.getPlayerId(), type,
 					quantity, currency, rate, new Date(), term, "Waiting");
 			em.persist(bet);
@@ -40,7 +46,7 @@ public enum Dao {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Player getPlayer(String palyerId) {
+	public Player getPlayer(String palyerId, String playerEmail) {
 		Player player = null;
 		synchronized (this) {
 			EntityManager em = EMFService.get().createEntityManager();
@@ -49,7 +55,7 @@ public enum Dao {
 			q.setParameter("palyerId", palyerId);
 			List<Player> players = q.getResultList();
 			if (players != null && players.isEmpty()) {
-				player = new Player(palyerId, 1000);
+				player = new Player(palyerId, playerEmail, 1000);
 				em.persist(player);
 				em.close();
 			} else {
@@ -75,11 +81,11 @@ public enum Dao {
 		}
 	}
 	
-	public void addDailyGain(String playerId)
+	public void addDailyGain(String playerId, String playerEmail)
 	{
 		EntityManager em = EMFService.get().createEntityManager();
 		
-		Player p = getPlayer(playerId);
+		Player p = getPlayer(playerId, playerEmail);
 		
 		synchronized (this) {
 			p.addBalance(new Float("500"));
@@ -174,6 +180,34 @@ public enum Dao {
 			}
 			em.persist(bet);
 			tr.commit();
+			
+			q = em.createQuery("select p from Player p where p.palyerId = :palyerId");
+			q.setParameter("palyerId", bet.getId());
+			Player player = (Player) q.getResultList().get(0);
+			try {
+				Properties props = new Properties();
+	            Session session = Session.getDefaultInstance(props, null);
+	            
+				Message msg = new MimeMessage(session);
+	            msg.setFrom(new InternetAddress("admin@m2stlbetapp.appspotmail.com", "m2stlbetapp"));
+	            msg.addRecipient(Message.RecipientType.TO,
+	                             new InternetAddress(player.getPlayerEmail(), ""));
+	            msg.setSubject("[m2stlbetapp] bet (" + bet.getQuantity() + ") " + bet.getStatus());
+	            msg.setText("Infos :"
+	            		+ "\ntype : " + bet.getType()
+	            		+ "\nquantity : " + bet.getQuantity()
+	            		+ "\ncurrency : " + bet.getCurrency()
+	            		+ "\nrates : " + bet.getRates()
+	            		+ "\nbetDate : " + bet.getBetDate()
+	            		+ "\nterm : " + bet.getTerm()
+	            		+ "\nstatus : " + bet.getStatus());
+	            Transport.send(msg);
+			} catch (MessagingException e) {
+	            e.printStackTrace();
+	        } catch (UnsupportedEncodingException e) {
+	        	e.printStackTrace();
+	        }
+			
 			i++;
 		}
 
