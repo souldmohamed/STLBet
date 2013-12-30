@@ -164,7 +164,7 @@ public enum Dao {
 	public void calculateGain(long gain) {
 		EntityManager em = EMFService.get().createEntityManager();
 		Query q = em
-				.createQuery("select t from ProductBet t and t.status ='Waiting'");
+				.createQuery("select t from ProductBet t where t.status='Waiting'");
 		EntityTransaction tr = null;
 
 		List<ProductBet> bets = q.getResultList();
@@ -181,9 +181,10 @@ public enum Dao {
 			em.persist(bet);
 			tr.commit();
 			
-			q = em.createQuery("select p from Player p where p.palyerId = :palyerId");
-			q.setParameter("palyerId", bet.getId());
-			Player player = (Player) q.getResultList().get(0);
+			Query q2 = em.createQuery("select p from Player p where p.palyerId = :palyerId");
+			q2.setParameter("palyerId", bet.getUserId());
+			Player player = (Player) q2.getResultList().get(0);
+
 			try {
 				Properties props = new Properties();
 	            Session session = Session.getDefaultInstance(props, null);
