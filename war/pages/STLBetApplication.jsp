@@ -31,7 +31,7 @@
 
 			var lsup = $('#lastupdate');
 			lsup.html("");
-			lsup.append(new Date(myJSON.timestamp));
+			lsup.append(new Date(myJSON.timestamp*1000));
 
 			var eur = $('#EUR');
 			eur.html("");
