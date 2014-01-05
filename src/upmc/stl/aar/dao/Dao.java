@@ -186,7 +186,9 @@ public enum Dao {
 			
 			tr = em.getTransaction();
 			tr.begin();
-			if(bet.getTermDate().after(now)){
+			
+			// select the bet whom status = waiting and betDate < CurrencyRates Timestamp  and termDate < now
+			if(bet.getTermDate().before(now)  && bet.getBetDate().before(RatesParser.getCurrencyRateTimestamp())){
 				String sQuantity = bet.getQuantity();
 				String sBetRate = bet.getRate();
 				String sTermRate = RatesParser.getCurrencyRate(bet.getCurrency());
