@@ -237,6 +237,7 @@
 										<td class="col-md-1">Rate</td>
 										<td class="col-md-3">Date</td>
 										<td class="col-md-1">Term</td>
+										<td class="col-md-1">Term Date</td>
 										<td class="col-md-1">Status</td>
 									</tr>
 									<c:forEach items="${ Cbets }" var="bet">
@@ -244,9 +245,10 @@
 											<td>${bet.type}</td>
 											<td>${bet.quantity}</td>
 											<td>${bet.currency}</td>
-											<td>${bet.rates}</td>
+											<td>${bet.rate}</td>
 											<td>${bet.betDate}</td>
 											<td>${bet.term}</td>
+											<td>${bet.termDate}</td>
 											<td>${bet.status}</td>
 										</tr>
 									</c:forEach>
@@ -268,6 +270,8 @@
 										<td class="col-md-1">Rate</td>
 										<td class="col-md-3">Date</td>
 										<td class="col-md-1">Term</td>
+										<td class="col-md-1">Term Date</td>
+										<td class="col-md-1">Term Rate</td>
 										<td class="col-md-1">Status</td>
 									</tr>
 									<c:forEach items="${ Hbets }" var="bet">
@@ -275,9 +279,11 @@
 											<td>${bet.type}</td>
 											<td>${bet.quantity}</td>
 											<td>${bet.currency}</td>
-											<td>${bet.rates}</td>
+											<td>${bet.rate}</td>
 											<td>${bet.betDate}</td>
 											<td>${bet.term}</td>
+											<td>${bet.termDate}</td>
+											<td>${bet.termRate}</td>
 											<td>${bet.status}</td>
 										</tr>
 									</c:forEach>

@@ -15,12 +15,12 @@ public class CalculateBetGainCron extends HttpServlet {
 	
   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException { 
 	  System.out.println("Calculate bet gain");
-	  User user = (User) req.getAttribute("user");
-	  if (user == null) {
-		  UserService userService = UserServiceFactory.getUserService();
-		  user = userService.getCurrentUser();
-	  }    
-	  Dao.INSTANCE.calculateGain(100l);
+//	  User user = (User) req.getAttribute("user");
+//	  if (user == null) {
+//		  UserService userService = UserServiceFactory.getUserService();
+//		  user = userService.getCurrentUser();
+//	  }    
+	  Dao.INSTANCE.calculateGain();
   }
   
 } 

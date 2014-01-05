@@ -11,6 +11,8 @@ import javax.persistence.Query;
 import upmc.stl.aar.model.CurrencyRates;
 import upmc.stl.aar.model.Player;
 import upmc.stl.aar.model.ProductBet;
+import upmc.stl.aar.utils.Mail;
+import upmc.stl.aar.utils.RatesParser;
 
 import com.google.appengine.api.datastore.Text;
 
@@ -23,12 +25,12 @@ public enum Dao {
 	INSTANCE;
 
 	public void addBet(String userId, String playerEmail, String type, String quantity,
-			String rate, String currency, String term) {
+			String rate, String currency, Date betDate, String term, Date termDate) {
 		synchronized (this) {
 			EntityManager em = EMFService.get().createEntityManager();
 			Player player = getPlayer(userId, playerEmail);
 			ProductBet bet = new ProductBet(player.getPlayerId(), type,
-					quantity, currency, rate, new Date(), term, "Waiting");
+					quantity, currency, rate, new Date(), term, termDate,null, "Waiting");
 			em.persist(bet);
 			em.close();
 		}
@@ -99,25 +101,25 @@ public enum Dao {
 	
 	/**
 	 * 
-	 * @param userId
+	 * @param playerId
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<ProductBet> getBets(String userId) {
+	public List<ProductBet> getBets(String playerId) {
 		EntityManager em = EMFService.get().createEntityManager();
 		Query q = em
-				.createQuery("select b from ProductBet b where b.userId = :userId and b.status ='Waiting'");
-		q.setParameter("userId", userId);
+				.createQuery("select b from ProductBet b where b.playerId = :playerId and b.status ='Waiting'");
+		q.setParameter("playerId", playerId);
 		List<ProductBet> bets = q.getResultList();
 		return bets;
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<ProductBet> getHistoryBets(String userId) {
+	public List<ProductBet> getHistoryBets(String playerId) {
 		EntityManager em = EMFService.get().createEntityManager();
 		Query q = em
-				.createQuery("select b from ProductBet b where b.userId = :userId and b.status <> 'Waiting'");
-		q.setParameter("userId", userId);
+				.createQuery("select b from ProductBet b where b.playerId = :playerId and b.status <> 'Waiting'");
+		q.setParameter("playerId", playerId);
 		List<ProductBet> bets = q.getResultList();
 		return bets;
 	}
@@ -161,59 +163,90 @@ public enum Dao {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void calculateGain(long gain) {
+	public void calculateGain() {
+		
 		EntityManager em = EMFService.get().createEntityManager();
-		Query q = em
-				.createQuery("select t from ProductBet t where t.status='Waiting'");
+		
+		// Retreive all bets whome status is wating
+		Query q = em.createQuery("select t from ProductBet t where t.status='Waiting'");
+		
 		EntityTransaction tr = null;
 
 		List<ProductBet> bets = q.getResultList();
-		int i = 0;
+		
+		Date now = new Date();
+		
 		for (ProductBet bet : bets) {
+			
+			System.out.println("bet ...");
+			Player player = getPlayer(bet.getPlayerId(), "");
+			
 			tr = em.getTransaction();
 			tr.begin();
-			// TODO CalculGain a modifier
-			if (i % 2 == 0) {
-				bet.setStatus("Gain");
-			} else {
-				bet.setStatus("Loss");
+			if(bet.getTermDate().after(now)){
+				String sQuantity = bet.getQuantity();
+				String sBetRate = bet.getRate();
+				String sTermRate = RatesParser.getCurrencyRate(bet.getCurrency());
+				
+				System.out.println("sQuantity="+sQuantity);
+				System.out.println("sBetRate="+sBetRate);
+				System.out.println("sTermRate="+sTermRate);
+				
+				Float quantity = Float.valueOf(sQuantity) ;
+				Float betRate = Float.valueOf(sBetRate) ;
+				Float termRate = Float.valueOf(sTermRate) ;
+				
+				bet.setTermRate(sTermRate);
+				int res = 0;
+				if(bet.getType().equals("Call")){
+					System.out.println("call");
+					res = Math.round(quantity * (termRate - betRate));
+					if(termRate >= betRate){
+						System.out.println("gain +"+res);
+						bet.setStatus("Gain : "+res);
+					}else{
+						System.out.println("loss -"+res);
+						bet.setStatus("Loss : "+res);
+					}
+				}else if(bet.getType().equals("Put")){
+					System.out.println("put");
+					res = Math.round(quantity * (betRate - termRate));
+					if(termRate <= betRate){
+						System.out.println("gain +"+res);
+						bet.setStatus("Gain : "+res);
+					}else{
+						System.out.println("loss -"+res);
+						bet.setStatus("Loss : "+res);
+					}
+				}
+				player.setBalance(player.getBalance()+res);
+				updateBalance(player);
+				
 			}
 			em.persist(bet);
 			tr.commit();
-			
-			Query q2 = em.createQuery("select p from Player p where p.palyerId = :palyerId");
-			q2.setParameter("palyerId", bet.getUserId());
-			Player player = (Player) q2.getResultList().get(0);
-
-			try {
-				Properties props = new Properties();
-	            Session session = Session.getDefaultInstance(props, null);
-	            
-				Message msg = new MimeMessage(session);
-	            msg.setFrom(new InternetAddress("admin@m2stlbetapp.appspotmail.com", "m2stlbetapp"));
-	            msg.addRecipient(Message.RecipientType.TO,
-	                             new InternetAddress(player.getPlayerEmail(), ""));
-	            msg.setSubject("[m2stlbetapp] bet (" + bet.getQuantity() + ") " + bet.getStatus());
-	            msg.setText("Infos :"
-	            		+ "\ntype : " + bet.getType()
-	            		+ "\nquantity : " + bet.getQuantity()
-	            		+ "\ncurrency : " + bet.getCurrency()
-	            		+ "\nrates : " + bet.getRates()
-	            		+ "\nbetDate : " + bet.getBetDate()
-	            		+ "\nterm : " + bet.getTerm()
-	            		+ "\nstatus : " + bet.getStatus());
-	            Transport.send(msg);
-			} catch (MessagingException e) {
-	            e.printStackTrace();
-	        } catch (UnsupportedEncodingException e) {
-	        	e.printStackTrace();
-	        }
-			
-			i++;
+			Mail.sendMail(player, bet);
 		}
 
 		em.close();
 		waitforrefresh();
+	}
+
+	public void updateBalance(Player player) {
+		System.out.println("updateBalance :"+player.getBalance());
+		synchronized (this) {
+			EntityManager em = EMFService.get().createEntityManager();
+			Query q = em
+					.createQuery("select p from Player p where p.palyerId = :palyerId");
+			q.setParameter("palyerId", player.getPlayerId());
+			List<Player> players = q.getResultList();
+			if (players != null && !players.isEmpty()) {
+				Player player_to_update = players.get(0);
+				player_to_update.setBalance(player.getBalance());
+				em.persist(player_to_update);
+				em.close();
+			} 
+		}
 	}
 
 	private void waitforrefresh() {

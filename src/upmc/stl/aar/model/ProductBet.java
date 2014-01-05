@@ -20,26 +20,30 @@ public class ProductBet {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String userId;
+	private String playerId;
 	private String type;
 	private String quantity;
 	private String currency;
-	private String rates;
+	private String rate;
 	private Date betDate;
 	private String term;
+	private Date termDate;
+	private String termRate;
 	private String status;
 
-	public ProductBet(String userId, String type, String quantity,
-			String currency, String rates, Date betDate, String term,
+	public ProductBet(String playerId, String type, String quantity,
+			String currency, String rate, Date betDate, String term,Date termDate,String termRate,
 			String status) {
 		super();
-		this.userId = userId;
+		this.playerId = playerId;
 		this.type = type;
 		this.quantity = quantity;
 		this.currency = currency;
-		this.rates = rates;
+		this.rate = rate;
 		this.betDate = betDate;
 		this.term = term;
+		this.termDate=termDate;
+		this.termRate=termRate;
 		this.status = status;
 	}
 
@@ -47,12 +51,12 @@ public class ProductBet {
 		return id;
 	}
 
-	public String getUserId() {
-		return userId;
+	public String getPlayerId() {
+		return playerId;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setPlayerId(String playerId) {
+		this.playerId = playerId;
 	}
 
 	public String getQuantity() {
@@ -71,12 +75,12 @@ public class ProductBet {
 		this.currency = currency;
 	}
 
-	public String getRates() {
-		return rates;
+	public String getRate() {
+		return rate;
 	}
 
-	public void setRates(String rates) {
-		this.rates = rates;
+	public void setRate(String rate) {
+		this.rate = rate;
 	}
 
 	public Date getBetDate() {
@@ -115,4 +119,20 @@ public class ProductBet {
 		this.type = type;
 	}
 
+	public Date getTermDate() {
+		return termDate;
+	}
+
+	public void setTermDate(Date termDate) {
+		this.termDate = termDate;
+	}
+
+	public String getTermRate() {
+		return termRate;
+	}
+
+	public void setTermRate(String termRate) {
+		this.termRate = termRate;
+	}
+	
 }
