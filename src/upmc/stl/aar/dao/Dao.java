@@ -33,7 +33,10 @@ public enum Dao {
 					quantity, currency, rate, new Date(), term, termDate,null, "Waiting");
 			em.persist(bet);
 			em.close();
+			
+			Mail.sendMail(player, bet);
 		}
+		
 		waitforrefresh();
 	}
 
