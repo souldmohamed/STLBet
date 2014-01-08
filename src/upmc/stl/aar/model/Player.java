@@ -7,7 +7,7 @@ import javax.persistence.Id;
 public class Player {
 
 	@Id
-	private String palyerId;
+	private String playerId;
 	
 	private String playerEmail;
 
@@ -17,19 +17,23 @@ public class Player {
 
 	public Player(String playerId, String playerEmail, float balance) {
 		super();
-		this.palyerId = playerId;
+		this.playerId = playerId;
 		this.playerEmail = playerEmail;
 		this.balance = balance;
 	}
 
 	public String getPlayerId() {
-		return palyerId;
+		return playerId;
 	}
 
-	public void setPlayerId(String playerId) {
-		this.palyerId = playerId;
+	public void setPlayerId(String palyerId) {
+		this.playerId = palyerId;
 	}
-	
+
+	public void setPlayerEmail(String playerEmail) {
+		this.playerEmail = playerEmail;
+	}
+
 	public String getPlayerEmail() {
 		return playerEmail;
 	}
@@ -41,7 +45,11 @@ public class Player {
 	public void setBalance(float balance) {
 		this.balance = balance;
 	}
-
+    
+	public boolean getIsEligible() {
+		return isEligible;
+	}
+	
 	public boolean isEligible() {
 		return isEligible;
 	}

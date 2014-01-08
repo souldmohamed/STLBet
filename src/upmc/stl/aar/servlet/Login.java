@@ -6,6 +6,8 @@ import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.http.*;
 
+import java.util.logging.Logger;
+
 import upmc.stl.aar.dao.Dao;
 import upmc.stl.aar.model.Player;
 import upmc.stl.aar.model.ProductBet;
@@ -17,7 +19,9 @@ import com.google.appengine.api.users.UserServiceFactory;
 
 @SuppressWarnings("serial")
 public class Login extends HttpServlet {
-
+	
+	private final static Logger logger = Logger.getLogger(Login.class .getName()); 
+	
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 	
@@ -29,16 +33,17 @@ public class Login extends HttpServlet {
 			
 			Dao dao = Dao.INSTANCE;
 			
+			logger.info("login  userId:"+user.getUserId());
+			
 			List<ProductBet> bets = dao.getBets(user.getUserId());
 			List<ProductBet> historybets = dao.getHistoryBets(user.getUserId());
 			Player player = dao.getPlayer(user.getUserId(), user.getEmail());
-			System.out.println("balance :"+player.getBalance());
+			
 			ctx.setAttribute("Cbets", bets);
 			ctx.setAttribute("Hbets", historybets);
 			ctx.setAttribute("Player", player);
-			
 			ctx.setAttribute("Logout", userService.createLogoutURL(req.getRequestURI()));
-			System.out.println("before redirect");
+			
 			resp.sendRedirect("pages/STLBetApplication.jsp");
 		} else {
 			resp.sendRedirect(userService.createLoginURL(req.getRequestURI()));

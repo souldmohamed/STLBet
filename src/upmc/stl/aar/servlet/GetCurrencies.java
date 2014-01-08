@@ -18,7 +18,6 @@ public class GetCurrencies extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		System.out.println("GetCurrencies ");
 		resp.setContentType("application/json");
 		PrintWriter out = resp.getWriter();
 		try {

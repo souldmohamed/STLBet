@@ -20,12 +20,16 @@ import javax.mail.*;
 import javax.mail.internet.*;
 
 import java.util.Properties;
+import java.util.logging.Logger;
 
 public enum Dao {
 	INSTANCE;
-
+    
+	private final static Logger logger = Logger.getLogger(Dao.class .getName()); 
+	
 	public void addBet(String userId, String playerEmail, String type, String quantity,
 			String rate, String currency, Date betDate, String term, Date termDate) {
+		logger.info("user Id :"+userId+ " add bet .....");
 		synchronized (this) {
 			EntityManager em = EMFService.get().createEntityManager();
 			Player player = getPlayer(userId, playerEmail);
@@ -51,16 +55,16 @@ public enum Dao {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Player getPlayer(String palyerId, String playerEmail) {
+	public Player getPlayer(String playerId, String playerEmail) {
 		Player player = null;
 		synchronized (this) {
 			EntityManager em = EMFService.get().createEntityManager();
 			Query q = em
-					.createQuery("select p from Player p where p.palyerId = :palyerId");
-			q.setParameter("palyerId", palyerId);
+					.createQuery("select p from Player p where p.playerId = :playerId");
+			q.setParameter("playerId", playerId);
 			List<Player> players = q.getResultList();
 			if (players != null && players.isEmpty()) {
-				player = new Player(palyerId, playerEmail, 1000);
+				player = new Player(playerId, playerEmail, 1000);
 				em.persist(player);
 				em.close();
 			} else {
@@ -242,8 +246,8 @@ public enum Dao {
 		synchronized (this) {
 			EntityManager em = EMFService.get().createEntityManager();
 			Query q = em
-					.createQuery("select p from Player p where p.palyerId = :palyerId");
-			q.setParameter("palyerId", player.getPlayerId());
+					.createQuery("select p from Player p where p.playerId = :playerId");
+			q.setParameter("playerId", player.getPlayerId());
 			List<Player> players = q.getResultList();
 			if (players != null && !players.isEmpty()) {
 				Player player_to_update = players.get(0);

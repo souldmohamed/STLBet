@@ -94,13 +94,13 @@
 								</ul></li>
 						</ul>
 						
-<%-- 						<c:choose> --%>
-<%-- 							<c:when test="${ Player.isEligible }"> --%>
-<!-- 								<form class="form-inline" method="post" action="DailyGain"> -->
-<!-- 									<input type="submit"/> -->
-<!-- 								</form> -->
-<%-- 							</c:when> --%>
-<%-- 						</c:choose> --%>
+						<c:choose>
+							<c:when test="${ Player.isEligible }">
+								<form class="form-inline" method="post" action="DailyGain">
+									<input type="submit"/>
+								</form>
+							</c:when>
+						</c:choose>
 
 						<ul class="nav navbar-nav navbar-right">
 							<li class="navbar-text">Current balance : ${ Player.balance }
