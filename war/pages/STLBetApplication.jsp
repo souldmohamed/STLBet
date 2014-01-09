@@ -176,10 +176,9 @@
 									</table>
 								</div>
 							</div>
-							<!-- Current rates section -->
-
 						</div>
 
+						<!-- Current rates section -->
 						<div class="container col-md-9">
 							<div class="panel panel-brown">
 								<div class="panel-heading">Current rates</div>
@@ -206,6 +205,28 @@
 											<td id="KWD"></td>
 											<td id="SGD"></td>
 											<td id="SAR"></td>
+										</tr>
+										<tr class="light-brown">
+											<td>CLF</td>
+											<td>KYD</td>
+											<td>HNL</td>
+											<td>DOP</td>
+											<td>LKR</td>
+											<td>MRO</td>
+											<td>MWK</td>
+											<td>TRY</td>
+											<td>BMD</td>
+										</tr>
+										<tr>
+											<td id="CLF"></td>
+											<td id="KYD"></td>
+											<td id="HNL"></td>
+											<td id="DOP"></td>
+											<td id="LKR"></td>
+											<td id="MRO"></td>
+											<td id="MWK"></td>
+											<td id="TRY"></td>
+											<td id="BMD"></td>
 										</tr>
 									</table>
 								</div>
@@ -238,7 +259,7 @@
 												<td><input class="form-control" type="text"
 													name="quantity" id="quantity" required></td>
 												<td><select class="form-control" name="currency"
-													id="currency" size="1">
+													id="currency" size="1" onload="generateOptions();">
 														<option>GBP</option>
 														<option>JPY</option>
 														<option>EUR</option>
@@ -248,6 +269,15 @@
 														<option>KWD</option>
 														<option>SGD</option>
 														<option>SAR</option>
+														<option>CLF</option>
+														<option>KYD</option>
+														<option>HNL</option>
+														<option>DOP</option>
+														<option>LKR</option>
+														<option>MRO</option>
+														<option>MWK</option>
+														<option>TRY</option>
+														<option>BMD</option>
 												</select></td>
 												<td><input class="form-control" type="text" name="rate"
 													id="rate" required></td>
@@ -341,12 +371,73 @@
 					<!-- End bets history -->
 					<!-- Help -->
 					<div class="tab-pane" id="bhelp">
-						<p>Blabla bla</p>
+						<div class="panel panel-brown">
+							<div class="panel-heading">About</div>
+							<div class="panel-body">
+								<p>In this game, we simply simulate Put and Call options
+									based on currency rates.</p>
+							</div>
+						</div>
+						<div class="panel panel-brown">
+							<div class="panel-heading">Rules</div>
+							<div class="panel-body">
+								<p>If the player creates a put (selling option) on a
+									currency, he/she is somehow betting on the reduction of this
+									currency's rate on due time. His/her gain/loss will be
+									determined at that time by the formula :</p>
+								<pre> quantity * (bet rate - term rate)</pre>
+								<p>On the other hand, if the player creates a call (buying
+									option) on a currency, he/she is betting that this currency's
+									rate will increase on due time. His/her gain/loss will be
+									determined at that time by the formula :</p>
+								<pre> quantity * (term rate - bet rate)</pre>
+								<p>In both cases, bet rate is represents the rate chosen by
+									the player when the bet was created and term rate the effective
+									rate of the currency when the bet ended.</p>
+							</div>
+						</div>
+						<div class="panel panel-brown">
+							<div class="panel-heading">Definitions by Wikipedia</div>
+							<div class="panel-body">
+								<p>
+									<b>PUT</b>
+								</p>
+								<blockquote cite="http://en.wikipedia.org/wiki/Put_option">In
+									finance, a put or put option is a stock market device which
+									gives the owner the right, but not the obligation, to sell an
+									asset (the underlying), at a specified price (the strike), by a
+									predetermined date (the expiry or maturity) to a given party
+									(the seller of the put). Put options are most commonly used in
+									the stock market to protect against the decline of the price of
+									a stock below a specified price. If the price of the stock
+									declines below the specified price of the put option, the owner
+									of the put has the right, but not the obligation, to sell the
+									asset at the specified price, while the seller of the put, has
+									the obligation to purchase the asset at the strike price if the
+									buyer uses the right to do so (the buyer is said to exercise
+									the put or put option). In this way the owner of the put will
+									receive at least the strike price specified even if the asset
+									is worth less.</blockquote>
+								<p>
+									<b>CALL</b>
+								</p>
+								<blockquote cite="http://en.wikipedia.org/wiki/Call_option">A
+									call option, often simply labeled a "call", is a financial
+									contract between two parties, the buyer and the seller of this
+									type of option.[1] The buyer of the call option has the right,
+									but not the obligation to buy an agreed quantity of a
+									particular commodity or financial instrument (the underlying)
+									from the seller of the option at a certain time (the expiration
+									date) for a certain price (thestrike price). The seller (or
+									"writer") is obligated to sell the commodity or financial
+									instrument to the buyer if the buyer so decides. The buyer pays
+									a fee (called a premium) for this right.</blockquote>
+							</div>
+						</div>
+						<!-- End Help -->
 					</div>
-					<!-- End Help -->
+					<!-- End TabPanes -->
 				</div>
-				<!-- End TabPanes -->
-			</div>
 		</c:when>
 		<c:otherwise>
 			<c:redirect url="/login" />
