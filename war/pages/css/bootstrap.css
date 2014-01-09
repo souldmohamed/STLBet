@@ -6,6 +6,8 @@
 
 /*! normalize.css v2.1.3 | MIT License | git.io/normalize */
 
+/* Custom added tags */
+
 .orange a {
 	color: #E9A449;
 }
@@ -43,6 +45,12 @@
 	
 }
 
+.light-orange {
+  background-color: #FFD273;
+}
+
+/* end of custom tags */
+
 article,
 aside,
 details,
@@ -78,7 +86,7 @@ html {
   font-family: sans-serif;
   -webkit-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
-      background-color: #FFD273;
+      background-color: #FFFFFF;
 }
 
 body {

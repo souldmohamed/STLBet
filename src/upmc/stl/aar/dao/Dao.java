@@ -38,16 +38,17 @@ public enum Dao {
 		logger.info("user Id :" + userId + " add bet .....");
 		synchronized (this) {
 			EntityManager em = EMFService.get().createEntityManager();
-			Player player = getPlayer(userId, playerEmail);
-			ProductBet bet = new ProductBet(player.getPlayerId(), type,
-					quantity, currency, rate, new Date(), term, termDate, null,
-					"Waiting");
-			em.persist(bet);
-			em.close();
-
-			Mail.sendMail(player, bet);
+			try {
+				Player player = getPlayer(userId, playerEmail);
+				ProductBet bet = new ProductBet(player.getPlayerId(), type,
+						quantity, currency, rate, new Date(), term, termDate,
+						null, "Waiting");
+				em.persist(bet);
+				Mail.sendMail(player, bet);
+			} finally {
+				em.close();
+			}
 		}
-
 		waitforrefresh();
 	}
 
@@ -85,10 +86,9 @@ public enum Dao {
 	}
 
 	/**
-	 * Retrieves the list of all players
+	 * 
 	 * 
 	 * @return
-	 * @throws UnauthorizedAccessException
 	 */
 	@SuppressWarnings("unchecked")
 	public void creditUsers() {

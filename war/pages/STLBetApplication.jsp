@@ -12,71 +12,19 @@
 
 <%@page import="java.util.ArrayList"%>
 
-<html>
+<html class="light-orange">
 <head>
 <title>STL Bet</title>
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-
-<script>
-	$.ajax({
-		url : '/getCurrencies',
-		dataType : 'json',
-		success : function(myJSON) {
-
-			var base = $('#base');
-			base.html("");
-			base.append(myJSON.base);
-
-			var lsup = $('#lastupdate');
-			lsup.html("");
-			lsup.append(new Date(myJSON.timestamp * 1000));
-
-			var GBP = $('#GBP');
-			GBP.html("");
-			GBP.append(myJSON.rates.GBP);
-
-			var JPY = $('#JPY');
-			JPY.html("");
-			JPY.append(myJSON.rates.JPY);
-
-			var eur = $('#EUR');
-			eur.html("");
-			eur.append(myJSON.rates.EUR);
-
-			var CNY = $('#CNY');
-			CNY.html("");
-			CNY.append(myJSON.rates.CNY);
-
-			var AUD = $('#AUD');
-			AUD.html("");
-			AUD.append(myJSON.rates.AUD);
-
-			var AED = $('#AED');
-			AED.html("");
-			AED.append(myJSON.rates.AED);
-
-			var KWD = $('#KWD');
-			KWD.html("");
-			KWD.append(myJSON.rates.KWD);
-
-			var SGD = $('#SGD');
-			SGD.html("");
-			SGD.append(myJSON.rates.SGD);
-
-			var SAR = $('#SAR');
-			SAR.html("");
-			SAR.append(myJSON.rates.SAR);
-		}
-	});
-</script>
+<script src="js/getcurrency.js"></script>
 <%
 	UserService userService = UserServiceFactory.getUserService();
 	User user = userService.getCurrentUser();
 %>
 </head>
-<body>
+<body onload="callAjax()">
 	<c:choose>
 		<c:when test="<%=userService.isUserLoggedIn()%>">
 			<!-- Header -->
