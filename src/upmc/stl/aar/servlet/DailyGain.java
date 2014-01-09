@@ -27,8 +27,10 @@ public class DailyGain extends HttpServlet {
 		UserService userService = UserServiceFactory.getUserService();
 		
 		if (req.getUserPrincipal() != null) {
+			System.out.println("Before" );
 			User user = userService.getCurrentUser();
-			dao.addDailyGain(user.getUserId(), user.getEmail());
+			dao.addDailyGain(user.getUserId());
+			System.out.println("After");
 		}
 		
 		resp.sendRedirect("login");

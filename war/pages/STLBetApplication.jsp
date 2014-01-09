@@ -107,13 +107,16 @@
 						<ul class="nav navbar-nav navbar-left">
 							<li class="navbar-text"><div class="orange">
 									Welcome,
-									<%=user.getNickname()%></div></li>
+									<%=user.getNickname()%>
+								</div></li>
 						</ul>
-
 						<c:if test="${ Player.isEligible }">
-							<form class="form-inline" method="post" action="DailyGain">
-								<input type="submit" />
-							</form>
+							<ul class="nav navbar-nav navbar-left">
+								<form class="navbar-form" method="post" action="/DailyGain">
+									<li><input class="btn btn-default form-control"
+										type="submit" value="Add credit (once per 24h)" /></li>
+								</form>
+							</ul>
 						</c:if>
 
 						<ul class="nav navbar-nav navbar-right">
@@ -266,7 +269,7 @@
 							<div class="panel panel-primary">
 								<div class="panel-heading">Actions</div>
 								<div class="panel-body">
-									<form class="form-horizontal" action="/New" method="post"
+									<form class="form-horizontal" action="/new" method="post"
 										accept-charset="utf-8">
 
 										<table class="table table-bordered">
