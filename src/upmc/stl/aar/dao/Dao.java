@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+import javax.servlet.ServletContext;
 
 import upmc.stl.aar.model.CurrencyRates;
 import upmc.stl.aar.model.Player;
@@ -16,6 +17,9 @@ import upmc.stl.aar.utils.Mail;
 import upmc.stl.aar.utils.RatesParser;
 
 import com.google.appengine.api.datastore.Text;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 
 import javax.mail.*;
 import javax.mail.internet.*;
@@ -84,22 +88,25 @@ public enum Dao {
 	 * Retrieves the list of all players
 	 * 
 	 * @return
+	 * @throws UnauthorizedAccessException 
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Player> getPlayers() {
-		synchronized (this) {
+	public void creditUsers(){
+			synchronized (this) {
 
-			List<Player> players = new ArrayList<Player>();
-			EntityManager em = EMFService.get().createEntityManager();
-			try {
-				Query q = em.createQuery("select p from Player p");
-				players = (List<Player>) q.getResultList();
-			} finally {
-				em.close();
+				EntityManager em = EMFService.get().createEntityManager();
+				try {
+					Query q = em.createQuery("select p from Player p");
+					List<Player> pList = (List<Player>) q.getResultList();
+					for (int i = 0; i < pList.size(); i++) {
+						Player p = pList.get(i);
+						p.setEligible(true);
+						em.persist(p);
+					}
+				} finally {
+					em.close();
+				}
 			}
-			return players;
-		}
-
 	}
 
 	public void addDailyGain(String playerId) {

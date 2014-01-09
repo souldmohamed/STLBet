@@ -19,10 +19,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>CreateNewBet</servlet-name>
 		<servlet-class>upmc.stl.aar.servlet.CreateBet</servlet-class>
 	</servlet>
-	
+
 	<servlet>
-	    <servlet-name>DailyGain</servlet-name>
-	    <servlet-class>upmc.stl.aar.servlet.DailyGain</servlet-class>
+		<servlet-name>DailyGain</servlet-name>
+		<servlet-class>upmc.stl.aar.servlet.DailyGain</servlet-class>
 	</servlet>
 
 	<servlet>
@@ -47,14 +47,14 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 
 	<servlet-mapping>
 		<servlet-name>DailyCredit</servlet-name>
-		<url-pattern>/DailyCredit</url-pattern>
+		<url-pattern>/cron/DailyCredit</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>
 		<servlet-name>DailyGain</servlet-name>
 		<url-pattern>/DailyGain</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet-mapping>
 		<servlet-name>CreateNewBet</servlet-name>
 		<url-pattern>/new</url-pattern>
@@ -67,13 +67,24 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 
 	<servlet-mapping>
 		<servlet-name>getCurrenciesCron</servlet-name>
-		<url-pattern>/getCurrenciesCron</url-pattern>
+		<url-pattern>/cron/getCurrenciesCron</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>
 		<servlet-name>calculategain</servlet-name>
-		<url-pattern>/calculategain</url-pattern>
+		<url-pattern>/cron/calculategain</url-pattern>
 	</servlet-mapping>
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>cron</web-resource-name>
+			<url-pattern>/cron/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>admin</role-name>
+		</auth-constraint>
+	</security-constraint>
+
 
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
