@@ -1,10 +1,10 @@
-<!-- Indices written at Mon, 30 Dec 2013 15:44:19 CET -->
+<!-- Indices written at Thu, 9 Jan 2014 13:32:52 CET -->
 
 <datastore-indexes>
 
-    <!-- Used 8 times in query history -->
+    <!-- Used 2 times in query history -->
     <datastore-index kind="ProductBet" ancestor="false" source="auto">
-        <property name="userId" direction="asc"/>
+        <property name="playerId" direction="asc"/>
         <property name="status" direction="asc"/>
     </datastore-index>
 

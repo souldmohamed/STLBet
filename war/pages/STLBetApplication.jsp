@@ -31,23 +31,43 @@
 
 			var lsup = $('#lastupdate');
 			lsup.html("");
-			lsup.append(new Date(myJSON.timestamp*1000));
+			lsup.append(new Date(myJSON.timestamp * 1000));
+
+			var GBP = $('#GBP');
+			GBP.html("");
+			GBP.append(myJSON.rates.GBP);
+
+			var JPY = $('#JPY');
+			JPY.html("");
+			JPY.append(myJSON.rates.JPY);
 
 			var eur = $('#EUR');
 			eur.html("");
 			eur.append(myJSON.rates.EUR);
 
-			var gbp = $('#GBP');
-			gbp.html("");
-			gbp.append(myJSON.rates.GBP);
+			var CNY = $('#CNY');
+			CNY.html("");
+			CNY.append(myJSON.rates.CNY);
 
-			var aud = $('#AUD');
-			aud.html("");
-			aud.append(myJSON.rates.AUD);
+			var AUD = $('#AUD');
+			AUD.html("");
+			AUD.append(myJSON.rates.AUD);
 
-			var cad = $('#CAD');
-			cad.html("");
-			cad.append(myJSON.rates.CAD);
+			var AED = $('#AED');
+			AED.html("");
+			AED.append(myJSON.rates.AED);
+
+			var KWD = $('#KWD');
+			KWD.html("");
+			KWD.append(myJSON.rates.KWD);
+
+			var SGD = $('#SGD');
+			SGD.html("");
+			SGD.append(myJSON.rates.SGD);
+
+			var SAR = $('#SAR');
+			SAR.html("");
+			SAR.append(myJSON.rates.SAR);
 		}
 	});
 </script>
@@ -56,62 +76,49 @@
 	User user = userService.getCurrentUser();
 %>
 </head>
-<body class="alert-success">
+<body>
 	<c:choose>
 		<c:when test="<%=userService.isUserLoggedIn()%>">
 			<!-- Header -->
-			<div class="container">
-				<br /> <img class="col-md-3 alert-success pull-left"
-					src="images/logo.png" />
-				<div class="well col-md-5 text-center">
+			<div class="container col-md-12 navbar-inverse">
+				<div class="col-md-3">
+					<img src="images/logo.png" style="height: 200px">
+				</div>
+
+
+				<div class="container col-md-9 orange">
+					<br />
 					<h1>
 						<b>U.G.L.Y Bet.ty</b>
 					</h1>
 					<small>Universally Gloomy Looking Yeti Bet Thanks to You</small>
-					<h1>
 
-						Put. Call. Win. <small>Simple. Effective.</small>
-					</h1>
+					<h3>Come for the shinies, stay for the shinies.</h3>
 				</div>
 			</div>
+
 			<!-- End header -->
 
 			<!-- Navigation bar -->
-			<div class="container">
-				<div class="navbar alert-info" role="navigation">
+			<div class="container col-md-12">
+				<br />
+				<div class="navbar navbar-inverse" role="navigation">
 					<div class="collapse navbar-collapse" id="Div1">
-						<ul class="nav navbar-nav navbar-right">
-							<li class="navbar-text">Welcome, <%=user.getNickname()%>
-							</li>
-							<li class="dropdown"><a href="#" class="dropdown-toggle"
-								data-toggle="dropdown"> <span
-									class="glyphicon glyphicon-cog"></span>
-							</a>
-								<ul class="dropdown-menu">
-									<li><a href="#">My profile</a></li>
-									<li class="divider"></li>
-									<li><a href="${ Logout }"> Logout </a></li>
-								</ul></li>
-						</ul>
-						
-						<c:choose>
-							<c:when test="${ Player.isEligible }">
-								<form class="form-inline" method="post" action="DailyGain">
-									<input type="submit"/>
-								</form>
-							</c:when>
-						</c:choose>
-
-						<ul class="nav navbar-nav navbar-right">
-							<li class="navbar-text">Current balance : ${ Player.balance }
-							</li>
-
+						<ul class="nav navbar-nav navbar-left">
+							<li class="navbar-text"><div class="orange">
+									Welcome,
+									<%=user.getNickname()%></div></li>
 						</ul>
 
-						<ul class="nav navbar-nav navbar-left alert-primary">
-							<li><a href="#bhome" data-toggle="tab">Home</a></li>
-							<li><a href="#bcurrent" data-toggle="tab">My bets</a></li>
-							<li><a href="#bhistory" data-toggle="tab">History</a></li>
+						<c:if test="${ Player.isEligible }">
+							<form class="form-inline" method="post" action="DailyGain">
+								<input type="submit" />
+							</form>
+						</c:if>
+
+						<ul class="nav navbar-nav navbar-right">
+							<li><a href="${ Logout }"><div class="orange">
+										Logout</div></a></li>
 						</ul>
 					</div>
 				</div>
@@ -120,50 +127,134 @@
 
 
 			<!-- Body -->
-			<div class="container">
+			<div class="container col-md-12">
+				<!-- Left panels -->
+				<div class="container col-md-2">
+					<div class="panel panel-default">
+						<div class="panel-body navbar-inverse bs-sidebar hidden-print"
+							role="complementary" style="height: 600px">
+							<ul class="nav bs-sidenav orange">
+								<li><a href="#bhome" data-toggle="tab">Home</a></li>
+								<li><a href="#bhelp" data-toggle="tab">How to play ?</a></li>
+								<li><a href="#bcurrent" data-toggle="tab">My bets</a></li>
+								<li><a href="#bhistory" data-toggle="tab">History</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
 
-
+				<!-- Message d'erreur -->
+				<c:if test="${ Error }">
+					<div class="tab-content col-md-10">
+						<div class="panel panel-danger">
+							<div class="panel-body alert-danger">Current balance
+								insufficient, please add credits.</div>
+						</div>
+					</div>
+				</c:if>
+				<!-- End message d'erreur -->
 
 				<!-- Tab panes -->
-				<div class="tab-content">
+				<div class="tab-content col-md-10">
 					<!-- Home tab -->
 					<div class="tab-pane active" id="bhome">
-
-						<!-- Currencies info -->
 						<div class="container col-md-3">
-
+							<!-- Balance -->
+							<div class="panel panel-primary">
+								<div class="panel-heading">Balance</div>
+								<div class="panel-body ">${ Player.balance }</div>
+							</div>
+						</div>
+						<div class="container col-md-4">
 							<!-- Base section -->
-							<div class="panel panel-info">
+							<div class="panel panel-primary">
 								<div class="panel-heading">Base</div>
 								<div class="panel-body" id="base"></div>
 							</div>
-
+						</div>
+						<div class="container col-md-5">
 							<!-- Last updated section -->
-							<div class="panel panel-info">
+							<div class="panel panel-primary">
 								<div class="panel-heading alert-info">Last updated</div>
 								<div class="panel-body" id="lastupdate"></div>
 							</div>
+						</div>
+						<!-- Currencies info -->
+						<div class="container col-md-3">
 
+							<div class="panel panel-primary">
+								<div class="panel-heading">Top Scores</div>
+								<div class="panel-body">
+									<table class="table table-bordered">
+										<tr>
+											<td class="col-md-3">1.</td>
+											<td></td>
+										</tr>
+										<tr>
+											<td>2.</td>
+											<td></td>
+										</tr>
+										<tr>
+											<td>3.</td>
+											<td></td>
+										</tr>
+										<tr>
+											<td>4.</td>
+											<td></td>
+										</tr>
+										<tr>
+											<td>5.</td>
+											<td></td>
+										</tr>
+										<tr>
+											<td>6.</td>
+											<td></td>
+										</tr>
+										<tr>
+											<td>7.</td>
+											<td></td>
+										</tr>
+										<tr>
+											<td>8.</td>
+											<td></td>
+										</tr>
+										<tr>
+											<td>9.</td>
+											<td></td>
+										</tr>
+									</table>
+								</div>
+							</div>
 							<!-- Current rates section -->
-							<div class="panel panel-info">
+
+						</div>
+
+						<div class="container col-md-9">
+							<div class="panel panel-primary">
 								<div class="panel-heading">Current rates</div>
 								<div class="panel-body">
 									<table class="table table-bordered">
 										<tr>
-											<td class="col-md-4">EUR</td>
-											<td id="EUR"></td>
-										</tr>
-										<tr>
 											<td>GBP</td>
-											<td id="GBP"></td>
-										</tr>
-										<tr>
+											<td>JPY</td>
+											<td>EUR</td>
+											<td>CNY</td>
 											<td>AUD</td>
-											<td id="AUD"></td>
+											<td>AED</td>
+											<td>KWD</td>
+											<td>SGD</td>
+											<td>SAR</td>
 										</tr>
 										<tr>
-											<td>CAD</td>
-											<td id="CAD"></td>
+											<td id="GBP"></td>
+											<td id="JPY"></td>
+											<td id="EUR"></td>
+											<td id="CNY"></td>
+											<td id="AUD"></td>
+											<td id="AED"></td>
+											<td id="KWD"></td>
+											<td id="SGD"></td>
+											<td id="SAR"></td>
 										</tr>
 									</table>
 								</div>
@@ -172,10 +263,10 @@
 
 						<!-- Right panel -->
 						<div class="container col-md-9">
-							<div class="panel panel-info">
+							<div class="panel panel-primary">
 								<div class="panel-heading">Actions</div>
 								<div class="panel-body">
-									<form class="form-horizontal" action="/new" method="post"
+									<form class="form-horizontal" action="/New" method="post"
 										accept-charset="utf-8">
 
 										<table class="table table-bordered">
@@ -197,11 +288,15 @@
 													name="quantity" id="quantity" /></td>
 												<td><select class="form-control" name="currency"
 													id="currency" size="1">
-														<option>USD</option>
-														<option>EUR</option>
 														<option>GBP</option>
-														<option>CAD</option>
+														<option>JPY</option>
+														<option>EUR</option>
+														<option>CNY</option>
 														<option>AUD</option>
+														<option>AED</option>
+														<option>KWD</option>
+														<option>SGD</option>
+														<option>SAR</option>
 												</select></td>
 												<td><input class="form-control" type="text" name="rate"
 													id="rate" /></td>
@@ -224,11 +319,12 @@
 						</div>
 					</div>
 					<!-- End home tab -->
+
 					<!-- My Bets -->
 					<div class="tab-pane" id="bcurrent">
-						<div class="panel panel-default">
+						<div class="panel panel-primary">
+							<div class="panel-heading">My bets</div>
 							<div class="panel-body">
-								<p>My bets</p>
 								<table class='table table-bordered text-center'>
 									<tr class="small alert-info">
 										<td class="col-md-1">Type</td>
@@ -259,9 +355,9 @@
 					</div>
 					<!-- Bets history -->
 					<div class="tab-pane" id="bhistory">
-						<div class="panel panel-default">
+						<div class="panel panel-primary">
+							<div class="panel-heading">Bets history</div>
 							<div class="panel-body">
-								<p>History</p>
 								<table class='table table-bordered text-center'>
 									<tr class="small alert-info">
 										<td class="col-md-1">Type</td>
@@ -292,7 +388,13 @@
 						</div>
 					</div>
 					<!-- End bets history -->
+					<!-- Help -->
+					<div class="tab-pane" id="bhelp">
+						<p>Blabla bla</p>
+					</div>
+					<!-- End Help -->
 				</div>
+				<!-- End TabPanes -->
 			</div>
 		</c:when>
 		<c:otherwise>

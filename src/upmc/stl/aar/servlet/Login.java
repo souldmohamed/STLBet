@@ -43,6 +43,7 @@ public class Login extends HttpServlet {
 			ctx.setAttribute("Hbets", historybets);
 			ctx.setAttribute("Player", player);
 			ctx.setAttribute("Logout", userService.createLogoutURL(req.getRequestURI()));
+			ctx.setAttribute("Error", false);
 			
 			resp.sendRedirect("pages/STLBetApplication.jsp");
 		} else {

@@ -6,6 +6,14 @@
 
 /*! normalize.css v2.1.3 | MIT License | git.io/normalize */
 
+.orange a {
+	color: #E9A449;
+}
+
+.orange {
+	color: #E9A449;
+}
+
 article,
 aside,
 details,
