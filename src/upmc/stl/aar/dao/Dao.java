@@ -88,25 +88,25 @@ public enum Dao {
 	 * Retrieves the list of all players
 	 * 
 	 * @return
-	 * @throws UnauthorizedAccessException 
+	 * @throws UnauthorizedAccessException
 	 */
 	@SuppressWarnings("unchecked")
-	public void creditUsers(){
-			synchronized (this) {
+	public void creditUsers() {
+		synchronized (this) {
 
-				EntityManager em = EMFService.get().createEntityManager();
-				try {
-					Query q = em.createQuery("select p from Player p");
-					List<Player> pList = (List<Player>) q.getResultList();
-					for (int i = 0; i < pList.size(); i++) {
-						Player p = pList.get(i);
-						p.setEligible(true);
-						em.persist(p);
-					}
-				} finally {
-					em.close();
+			EntityManager em = EMFService.get().createEntityManager();
+			try {
+				Query q = em.createQuery("select p from Player p");
+				List<Player> pList = (List<Player>) q.getResultList();
+				for (int i = 0; i < pList.size(); i++) {
+					Player p = pList.get(i);
+					p.setEligible(true);
+					em.persist(p);
 				}
+			} finally {
+				em.close();
 			}
+		}
 	}
 
 	public void addDailyGain(String playerId) {

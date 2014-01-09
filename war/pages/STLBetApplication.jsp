@@ -80,7 +80,7 @@
 	<c:choose>
 		<c:when test="<%=userService.isUserLoggedIn()%>">
 			<!-- Header -->
-			<div class="container col-md-12 navbar-inverse">
+			<div class="container col-md-12 bkground">
 				<div class="col-md-3">
 					<img src="images/logo.png" style="height: 200px">
 				</div>
@@ -102,7 +102,7 @@
 			<!-- Navigation bar -->
 			<div class="container col-md-12">
 				<br />
-				<div class="navbar navbar-inverse" role="navigation">
+				<div class="navbar bkground" role="navigation">
 					<div class="collapse navbar-collapse" id="Div1">
 						<ul class="nav navbar-nav navbar-left">
 							<li class="navbar-text"><div class="orange">
@@ -134,7 +134,7 @@
 				<!-- Left panels -->
 				<div class="container col-md-2">
 					<div class="panel panel-default">
-						<div class="panel-body navbar-inverse bs-sidebar hidden-print"
+						<div class="panel-body bkground bs-sidebar hidden-print"
 							role="complementary" style="height: 600px">
 							<ul class="nav bs-sidenav orange">
 								<li><a href="#bhome" data-toggle="tab">Home</a></li>
@@ -163,29 +163,29 @@
 					<div class="tab-pane active" id="bhome">
 						<div class="container col-md-3">
 							<!-- Balance -->
-							<div class="panel panel-primary">
+							<div class="panel panel-brown">
 								<div class="panel-heading">Balance</div>
 								<div class="panel-body ">${ Player.balance }</div>
 							</div>
 						</div>
 						<div class="container col-md-4">
 							<!-- Base section -->
-							<div class="panel panel-primary">
+							<div class="panel panel-brown">
 								<div class="panel-heading">Base</div>
 								<div class="panel-body" id="base"></div>
 							</div>
 						</div>
 						<div class="container col-md-5">
 							<!-- Last updated section -->
-							<div class="panel panel-primary">
-								<div class="panel-heading alert-info">Last updated</div>
+							<div class="panel panel-brown">
+								<div class="panel-heading light-brown">Last updated</div>
 								<div class="panel-body" id="lastupdate"></div>
 							</div>
 						</div>
 						<!-- Currencies info -->
 						<div class="container col-md-3">
 
-							<div class="panel panel-primary">
+							<div class="panel panel-brown">
 								<div class="panel-heading">Top Scores</div>
 								<div class="panel-body">
 									<table class="table table-bordered">
@@ -233,11 +233,11 @@
 						</div>
 
 						<div class="container col-md-9">
-							<div class="panel panel-primary">
+							<div class="panel panel-brown">
 								<div class="panel-heading">Current rates</div>
 								<div class="panel-body">
 									<table class="table table-bordered">
-										<tr>
+										<tr class="light-brown">
 											<td>GBP</td>
 											<td>JPY</td>
 											<td>EUR</td>
@@ -266,14 +266,14 @@
 
 						<!-- Right panel -->
 						<div class="container col-md-9">
-							<div class="panel panel-primary">
+							<div class="panel panel-brown">
 								<div class="panel-heading">Actions</div>
 								<div class="panel-body">
 									<form class="form-horizontal" action="/new" method="post"
 										accept-charset="utf-8">
 
 										<table class="table table-bordered">
-											<tr class="alert-info text-center">
+											<tr class="light-brown text-center">
 												<td class="col-md-2">Type</td>
 												<td class="col-md-2">Quantity</td>
 												<td class="col-md-2">Currency</td>
@@ -288,7 +288,7 @@
 														<option>Call</option>
 												</select></td>
 												<td><input class="form-control" type="text"
-													name="quantity" id="quantity" /></td>
+													name="quantity" id="quantity" required></td>
 												<td><select class="form-control" name="currency"
 													id="currency" size="1">
 														<option>GBP</option>
@@ -302,7 +302,7 @@
 														<option>SAR</option>
 												</select></td>
 												<td><input class="form-control" type="text" name="rate"
-													id="rate" /></td>
+													id="rate" required></td>
 												<td><select class="form-control" name="term" size="1">
 														<option>1 h</option>
 														<option>3 h</option>
@@ -325,11 +325,11 @@
 
 					<!-- My Bets -->
 					<div class="tab-pane" id="bcurrent">
-						<div class="panel panel-primary">
+						<div class="panel panel-brown">
 							<div class="panel-heading">My bets</div>
 							<div class="panel-body">
 								<table class='table table-bordered text-center'>
-									<tr class="small alert-info">
+									<tr class="small light-brown">
 										<td class="col-md-1">Type</td>
 										<td class="col-md-1">Qty</td>
 										<td class="col-md-1">Curr</td>
@@ -358,11 +358,11 @@
 					</div>
 					<!-- Bets history -->
 					<div class="tab-pane" id="bhistory">
-						<div class="panel panel-primary">
+						<div class="panel panel-brown">
 							<div class="panel-heading">Bets history</div>
 							<div class="panel-body">
 								<table class='table table-bordered text-center'>
-									<tr class="small alert-info">
+									<tr class="small light-brown">
 										<td class="col-md-1">Type</td>
 										<td class="col-md-1">Qty</td>
 										<td class="col-md-1">Curr</td>

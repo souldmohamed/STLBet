@@ -1,12 +1,14 @@
 package upmc.stl.aar.servlet;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.Date;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 
 
 
@@ -22,7 +24,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 public class CreateBet extends HttpServlet {
 	
   public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-	  
+	 
     System.out.println("Creating new bet ");
     User user = (User) req.getAttribute("user");
     if (user == null) {
@@ -30,11 +32,11 @@ public class CreateBet extends HttpServlet {
       user = userService.getCurrentUser();
     }
     
-    String type = checkNull(req.getParameter("type"));
-    String quantity = checkNull(req.getParameter("quantity"));
-    String rate = checkNull(req.getParameter("rate"));
-    String currency = checkNull(req.getParameter("currency"));
-    String term = checkNull(req.getParameter("term"));
+    String type = URLEncoder.encode(checkNull(req.getParameter("type")), "UTF-8");
+    String quantity = URLEncoder.encode(checkNull(req.getParameter("quantity")), "UTF-8");
+    String rate = URLEncoder.encode(checkNull(req.getParameter("rate")), "UTF-8");
+    String currency = URLEncoder.encode(checkNull(req.getParameter("currency")), "UTF-8");
+    String term = URLEncoder.encode(checkNull(req.getParameter("term")), "UTF-8");
     Date betDate = new Date();
     Date termDate = null;
     

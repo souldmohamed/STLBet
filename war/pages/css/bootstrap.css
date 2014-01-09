@@ -14,6 +14,35 @@
 	color: #E9A449;
 }
 
+.bkground {
+	background-color: #080808;
+	border-color: #080808;
+}
+
+.panel-brown {
+  border-color: #A64E00;
+}
+
+.panel-brown > .panel-heading {
+  color: #ffffff;
+  background-color: #A64E00;
+  border-color: #A64E00;
+}
+
+.panel-brown > .panel-heading + .panel-collapse .panel-body {
+  border-top-color: #A64E00;
+}
+
+.panel-brown > .panel-footer + .panel-collapse .panel-body {
+  border-bottom-color: #A64E00;
+}
+
+.light-brown {
+  background-color: #BF7130;
+  color: #ffffff;
+	
+}
+
 article,
 aside,
 details,
@@ -49,10 +78,12 @@ html {
   font-family: sans-serif;
   -webkit-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
+      background-color: #FFD273;
 }
 
 body {
   margin: 0;
+  
 }
 
 a {
@@ -4809,7 +4840,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 
 .navbar-inverse {
-  background-color: #222222;
+  background-color: #080808;
   border-color: #080808;
 }
 
