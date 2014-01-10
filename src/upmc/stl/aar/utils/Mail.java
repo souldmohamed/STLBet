@@ -25,16 +25,24 @@ public class Mail {
 			Message msg = new MimeMessage(session);
             msg.setFrom(new InternetAddress("admin@m2stlbetapp.appspotmail.com", "m2stlbetapp"));
             msg.addRecipient(Message.RecipientType.TO,new InternetAddress(player.getPlayerEmail(), ""));
-            msg.setSubject("[M2stlbetapp] bet (" + bet.getQuantity() + ") " + bet.getStatus());
-            msg.setText("Infos :"
-            		+ "\ntype : " + bet.getType()
-            		+ "\nquantity : " + bet.getQuantity()
-            		+ "\ncurrency : " + bet.getCurrency()
-            		+ "\nrate : " + bet.getRate()
-            		+ "\nbet date : " + bet.getBetDate()
-            		+ "\nterm : " + bet.getTerm()
-            		+ "\nterm date  : " + bet.getTermDate()
-            		+ "\nstatus : " + bet.getStatus());
+            msg.setSubject("[M2stlbetapp] Bet Information Update (" + bet.getQuantity() + ") " + bet.getStatus());
+            msg.setText("Thank you for playing on the U.G.L.Y Bet.ty application !"
+            		+ "\n\nHere are some update information about the recent " 
+            		+ bet.getType() 
+            		+ " bet you have made."
+            		+ " Just to remind you, it concerned " 
+            		+ bet.getQuantity() 
+            		+ " " 
+            		+ bet.getCurrency() 
+            		+ " which you evaluated to a rate of : " 
+            		+ bet.getRate() + "."
+            		+ "\n\nYou created the bet on the date of " 
+            		+ bet.getBetDate() 
+            		+ "with an ending estimation of " 
+            		+ bet.getTerm() 
+            		+ " and therefore it will end on " 
+            		+ bet.getTermDate() 
+            		+ ".\n\nThank you for your support. We hope to see you again soon\n\nGet back to the website : http://m2stlbetapp.appspot.com/");
             Transport.send(msg);
 		} catch (MessagingException e) {
             e.printStackTrace();
