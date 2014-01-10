@@ -22,17 +22,17 @@ public class ProductBet {
 
 	private String playerId;
 	private String type;
-	private String quantity;
+	private float quantity;
 	private String currency;
-	private String rate;
+	private float rate;
 	private Date betDate;
 	private String term;
 	private Date termDate;
 	private String termRate;
 	private String status;
 
-	public ProductBet(String playerId, String type, String quantity,
-			String currency, String rate, Date betDate, String term,Date termDate,String termRate,
+	public ProductBet(String playerId, String type, float quantity,
+			String currency, float rate, Date betDate, String term,Date termDate,String termRate,
 			String status) {
 		super();
 		this.playerId = playerId;
@@ -59,11 +59,11 @@ public class ProductBet {
 		this.playerId = playerId;
 	}
 
-	public String getQuantity() {
+	public float getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(String quantity) {
+	public void setQuantity(float quantity) {
 		this.quantity = quantity;
 	}
 
@@ -75,11 +75,11 @@ public class ProductBet {
 		this.currency = currency;
 	}
 
-	public String getRate() {
+	public float getRate() {
 		return rate;
 	}
 
-	public void setRate(String rate) {
+	public void setRate(float rate) {
 		this.rate = rate;
 	}
 

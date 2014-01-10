@@ -95,14 +95,23 @@
 				</div>
 
 				<!-- Message d'erreur -->
-				<c:if test="${ Error }">
+				<c:choose>
+				<c:when test="${ Err == 1 }">
 					<div class="tab-content col-md-10">
 						<div class="panel panel-danger">
 							<div class="panel-body alert-danger">Current balance
 								insufficient, please add credits.</div>
 						</div>
 					</div>
-				</c:if>
+				</c:when>
+				<c:when test="${ Err == 2 }">
+					<div class="tab-content col-md-10">
+						<div class="panel panel-danger">
+							<div class="panel-body alert-danger">Quantity and rates need to have a number format.</div>
+						</div>
+					</div>
+				</c:when>
+				</c:choose>
 				<!-- End message d'erreur -->
 
 				<!-- Tab panes -->
@@ -294,6 +303,7 @@
 													type="submit" value="Submit" /></td>
 											</tr>
 										</table>
+										<input type="hidden" name="balance" value="${Player.balance }"/>
 									</form>
 								</div>
 							</div>
@@ -312,9 +322,9 @@
 										<td class="col-md-1">Qty</td>
 										<td class="col-md-1">Curr</td>
 										<td class="col-md-1">Rate</td>
-										<td class="col-md-3">Date</td>
+										<td class="col-md-2">Date</td>
 										<td class="col-md-1">Term</td>
-										<td class="col-md-1">Term Date</td>
+										<td class="col-md-2">Term Date</td>
 										<td class="col-md-1">Status</td>
 									</tr>
 									<c:forEach items="${ Cbets }" var="bet">
@@ -345,9 +355,9 @@
 										<td class="col-md-1">Qty</td>
 										<td class="col-md-1">Curr</td>
 										<td class="col-md-1">Rate</td>
-										<td class="col-md-3">Date</td>
+										<td class="col-md-2">Date</td>
 										<td class="col-md-1">Term</td>
-										<td class="col-md-1">Term Date</td>
+										<td class="col-md-2">Term Date</td>
 										<td class="col-md-1">Term Rate</td>
 										<td class="col-md-1">Status</td>
 									</tr>

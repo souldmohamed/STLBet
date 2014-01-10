@@ -25,7 +25,7 @@ public class Mail {
 			Message msg = new MimeMessage(session);
             msg.setFrom(new InternetAddress("admin@m2stlbetapp.appspotmail.com", "m2stlbetapp"));
             msg.addRecipient(Message.RecipientType.TO,new InternetAddress(player.getPlayerEmail(), ""));
-            msg.setSubject("[m2stlbetapp] bet (" + bet.getQuantity() + ") " + bet.getStatus());
+            msg.setSubject("[M2stlbetapp] bet (" + bet.getQuantity() + ") " + bet.getStatus());
             msg.setText("Infos :"
             		+ "\ntype : " + bet.getType()
             		+ "\nquantity : " + bet.getQuantity()

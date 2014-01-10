@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
 import java.util.logging.Logger;
@@ -16,38 +17,50 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
-
 @SuppressWarnings("serial")
 public class Login extends HttpServlet {
-	
-	private final static Logger logger = Logger.getLogger(Login.class .getName()); 
-	
+
+	private final static Logger logger = Logger
+			.getLogger(Login.class.getName());
+
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
-	
+
 		UserService userService = UserServiceFactory.getUserService();
-		
+
 		if (req.getUserPrincipal() != null) {
 			ServletContext ctx = req.getSession().getServletContext();
 			User user = userService.getCurrentUser();
-			
+
 			Dao dao = Dao.INSTANCE;
-			
-			logger.info("login  userId:"+user.getUserId());
-			
+
+			logger.info("login  userId:" + user.getUserId());
+
 			List<ProductBet> bets = dao.getBets(user.getUserId());
 			List<ProductBet> historybets = dao.getHistoryBets(user.getUserId());
 			Player player = dao.getPlayer(user.getUserId(), user.getEmail());
-			
+
 			ctx.setAttribute("Cbets", bets);
 			ctx.setAttribute("Hbets", historybets);
 			ctx.setAttribute("Player", player);
-			ctx.setAttribute("Logout", userService.createLogoutURL(req.getRequestURI()));
-			ctx.setAttribute("Error", false);
-			
-			resp.sendRedirect("pages/STLBetApplication.jsp");
+			ctx.setAttribute("Logout",
+					userService.createLogoutURL(req.getRequestURI()));
+			System.out.println("ERR" + req.getAttribute("Err"));
+			if (req.getAttribute("Err") == null) {
+				ctx.setAttribute("Err", 0);
+				resp.sendRedirect("pages/STLBetApplication.jsp");
+			} else {
+				ctx.setAttribute("Err", req.getAttribute("Err"));
+				resp.sendRedirect("pages/STLBetApplication.jsp");
+			}
+
 		} else {
 			resp.sendRedirect(userService.createLoginURL(req.getRequestURI()));
 		}
+	}
+
+	public void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+		doGet(req, resp);
 	}
 }

@@ -1,6 +1,7 @@
 package upmc.stl.aar.dao;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,15 +34,16 @@ public enum Dao {
 	private final static Logger logger = Logger.getLogger(Dao.class.getName());
 
 	public void addBet(String userId, String playerEmail, String type,
-			String quantity, String rate, String currency, Date betDate,
+			float quantity, float rate, String currency, Date betDate,
 			String term, Date termDate) {
 		logger.info("user Id :" + userId + " add bet .....");
 		synchronized (this) {
 			EntityManager em = EMFService.get().createEntityManager();
+			String term2 = term.replace("+", " ");
 			try {
 				Player player = getPlayer(userId, playerEmail);
 				ProductBet bet = new ProductBet(player.getPlayerId(), type,
-						quantity, currency, rate, new Date(), term, termDate,
+						quantity, currency, rate, new Date(), term2, termDate,
 						null, "Waiting");
 				em.persist(bet);
 				Mail.sendMail(player, bet);
@@ -237,8 +239,8 @@ public enum Dao {
 				if (bet.getTermDate().before(now)
 						&& bet.getBetDate().before(
 								RatesParser.getCurrencyRateTimestamp())) {
-					String sQuantity = bet.getQuantity();
-					String sBetRate = bet.getRate();
+					float sQuantity = bet.getQuantity();
+					float sBetRate = bet.getRate();
 					String sTermRate = RatesParser.getCurrencyRate(bet
 							.getCurrency());
 
