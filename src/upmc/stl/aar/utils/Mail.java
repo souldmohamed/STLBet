@@ -33,8 +33,8 @@ public class Mail {
             msg.setSubject("[M2stlbetapp] Bet Information Update (" + bet.getQuantity() + ") " + bet.getStatus());
             msg.setText("Thank you for playing on the U.G.L.Y Bet.ty application !"
             		+ "\n\nHere are some update information about the recent " 
-            		+ bet.getType() +"\n"
-            		+ " bet you have made. "
+            		+ bet.getType()
+            		+ " bet you have made.\n "
             		+ " Just to remind you, it concerned  " 
             		+ bet.getQuantity() 
             		+ " " 
