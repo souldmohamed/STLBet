@@ -5,6 +5,7 @@
 <%@ page import="com.google.appengine.api.users.User"%>
 <%@ page import="com.google.appengine.api.users.UserService"%>
 <%@ page import="com.google.appengine.api.users.UserServiceFactory"%>
+<%@ page import="upmc.stl.aar.dao.Dao"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
@@ -146,42 +147,52 @@
 								<div class="panel-heading">Top Scores</div>
 								<div class="panel-body">
 									<table class="table table-bordered">
-										<tr>
-											<td class="col-md-3">1.</td>
-											<td></td>
-										</tr>
-										<tr>
-											<td>2.</td>
-											<td></td>
-										</tr>
-										<tr>
-											<td>3.</td>
-											<td></td>
-										</tr>
-										<tr>
-											<td>4.</td>
-											<td></td>
-										</tr>
-										<tr>
-											<td>5.</td>
-											<td></td>
-										</tr>
-										<tr>
-											<td>6.</td>
-											<td></td>
-										</tr>
-										<tr>
-											<td>7.</td>
-											<td></td>
-										</tr>
-										<tr>
-											<td>8.</td>
-											<td></td>
-										</tr>
-										<tr>
-											<td>9.</td>
-											<td></td>
-										</tr>
+									  <%List<Float> scores = Dao.INSTANCE.getPlayerScores(user.getUserId()); %>
+									  
+									  	<%for(int i=0;i<scores.size();i++) {%>
+											<tr>
+												<td class="col-md-3"><%=i+1%>.</td>
+												<td><%=scores.get(i)%></td>
+											</tr>
+									 	 <%}%>
+									 	 
+									    	<!-- <tr>
+												<td class="col-md-3">1.</td>
+												<td></td>
+											</tr>
+									    	<tr>
+												<td>2.</td>
+												<td></td>
+											</tr>
+											<tr>
+												<td>3.</td>
+												<td></td>
+											</tr>
+											<tr>
+												<td>4.</td>
+												<td></td>
+											</tr>
+											<tr>
+												<td>5.</td>
+												<td></td>
+											</tr>
+											<tr>
+												<td>6.</td>
+												<td></td>
+											</tr>
+											<tr>
+												<td>7.</td>
+												<td></td>
+											</tr>
+											<tr>
+												<td>8.</td>
+												<td></td>
+											</tr>
+											<tr>
+												<td>9.</td>
+												<td></td>
+											</tr> -->
+										
 									</table>
 								</div>
 							</div>
@@ -359,6 +370,7 @@
 										<td class="col-md-1">Term</td>
 										<td class="col-md-2">Term Date</td>
 										<td class="col-md-1">Term Rate</td>
+										<td class="col-md-1">Score</td>
 										<td class="col-md-1">Status</td>
 									</tr>
 									<c:forEach items="${ Hbets }" var="bet">
@@ -371,6 +383,7 @@
 											<td>${bet.term}</td>
 											<td>${bet.termDate}</td>
 											<td>${bet.termRate}</td>
+											<td>${bet.score}</td>
 											<td>${bet.status}</td>
 										</tr>
 									</c:forEach>

@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,13 +20,15 @@ import upmc.stl.aar.dao.Dao;
  */
 public class GetCurrenciesCron extends HttpServlet {
 	
+	private final static Logger logger = Logger.getLogger(GetCurrenciesCron.class.getName());
+	
 	private final String url = "http://openexchangerates.org/api/latest.json?app_id=7b689b62ead6401a81006d181eb87730";
 	
 	private static final long serialVersionUID = 1L;
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		
-		System.out.println("GetCurrencies Cron");
+		logger.info("GetCurrencies Cron");
 		resp.setContentType("application/json");
 		PrintWriter out = resp.getWriter();
 		try {
@@ -47,8 +50,8 @@ public class GetCurrenciesCron extends HttpServlet {
 		con.setRequestMethod("GET");
 	 
 		int responseCode = con.getResponseCode();
-		System.out.println("\nSending 'GET' request to URL : " + url);
-		System.out.println("Response Code : " + responseCode);
+		logger.info("\nSending 'GET' request to URL : " + url);
+		logger.info("Response Code : " + responseCode);
 	 
 		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 		String inputLine;

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -14,9 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 
 
 
+
 //import sun.util.calendar.BaseCalendar.Date;
 import upmc.stl.aar.dao.Dao;
 import upmc.stl.aar.exceptions.InsufficientBalanceException;
+import upmc.stl.aar.utils.RatesParser;
 
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
@@ -27,11 +30,13 @@ import com.google.appengine.api.users.UserServiceFactory;
  */
 @SuppressWarnings("serial")
 public class CreateBet extends HttpServlet {
-
+	
+	private final static Logger logger = Logger.getLogger(CreateBet.class.getName());
+	
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		try {
-			System.out.println("Creating new bet ");
+			logger.info("Creating new bet ");
 			User user = (User) req.getAttribute("user");
 			if (user == null) {
 				UserService userService = UserServiceFactory.getUserService();
@@ -55,20 +60,26 @@ public class CreateBet extends HttpServlet {
 
 			Calendar cal = Calendar.getInstance(); // creates calendar
 			cal.setTime(betDate); // sets calendar time/date
-			System.out.println(term);
+			logger.info(term);
 
 			// Check on quantity parameter
-			Float cquantity = Float.valueOf(qty);
-			System.out.println("QTY : " + Float.valueOf(qty));
+			int cquantity = Integer.valueOf(qty);
+			logger.info("QTY : " + Float.valueOf(qty));
 			// Check on rate parameter
 			String s = rate;
 			if (rate.length() > 7) {
 				s = String.copyValueOf(rate.toCharArray(), 0, 7);
 			}
 			Float crate = Float.valueOf(s);
-			System.out.println("QTY : " + Float.valueOf(s));
-
-			System.out.println("ooooooo");
+			logger.info("crate : " + Float.valueOf(s));
+			
+			String tc = RatesParser.getCurrencyRate(currency);
+			Float trate=null;
+			if(tc!=null){
+				trate = Float.valueOf(tc);
+			    logger.info("trate : " + trate);
+			}
+			
 			// Calculating term date
 			if (term.equals("1+h")) {
 				cal.add(Calendar.HOUR_OF_DAY, 1);
@@ -95,7 +106,7 @@ public class CreateBet extends HttpServlet {
 
 			// Check on balance
 			Float bal = Float.valueOf(balance);
-			if (bal < (cquantity * crate))
+			if (bal < (cquantity * Math.abs(crate - trate)))
 			{
 				throw new InsufficientBalanceException();
 			}
@@ -105,7 +116,7 @@ public class CreateBet extends HttpServlet {
 
 			resp.sendRedirect("login");
 		} catch (NumberFormatException e) {
-			System.out.println("NUMBERFORMATEXCEPTION");
+			logger.info("NUMBERFORMATEXCEPTION");
 			req.setAttribute("Err", 2);
 			try {
 				req.getRequestDispatcher("login").forward(req, resp);
@@ -114,10 +125,10 @@ public class CreateBet extends HttpServlet {
 				e1.printStackTrace();
 			}
 		} catch (InsufficientBalanceException e) {
-			System.out.println("SET1");
+			logger.info("SET1");
 			req.setAttribute("Err", 1);
 			try {
-				System.out.println("LLLLLOGIN");
+				logger.info("LOGIN");
 				req.getRequestDispatcher("login").forward(req, resp);
 			} catch (ServletException e1) {
 				// TODO Auto-generated catch block

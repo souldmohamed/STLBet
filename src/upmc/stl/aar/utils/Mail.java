@@ -33,9 +33,9 @@ public class Mail {
             msg.setSubject("[M2stlbetapp] Bet Information Update (" + bet.getQuantity() + ") " + bet.getStatus());
             msg.setText("Thank you for playing on the U.G.L.Y Bet.ty application !"
             		+ "\n\nHere are some update information about the recent " 
-            		+ bet.getType() 
-            		+ " bet you have made."
-            		+ " Just to remind you, it concerned " 
+            		+ bet.getType() +"\n"
+            		+ " bet you have made. "
+            		+ " Just to remind you, it concerned  " 
             		+ bet.getQuantity() 
             		+ " " 
             		+ bet.getCurrency() 
@@ -43,10 +43,11 @@ public class Mail {
             		+ bet.getRate() + "."
             		+ "\n\nYou created the bet on the date of " 
             		+ bet.getBetDate() 
-            		+ "with an ending estimation of " 
+            		+ " with an ending estimation of  " 
             		+ bet.getTerm() 
-            		+ " and therefore it will end on " 
+            		+ ((bet.getStatus().equals("Waiting"))?"  and therefore it will end on  ":"  and ended on  ")
             		+ bet.getTermDate() 
+            		+ ((!bet.getStatus().equals("Waiting"))?" your score for this bet is : "+bet.getScore() +" \n" :" \n")
             		+ ".\n\nThank you for your support. We hope to see you again soon" 
             		+ "\n\nGet back to the website : http://m2stlbetapp.appspot.com/");
             Transport.send(msg);

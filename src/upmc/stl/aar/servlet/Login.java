@@ -48,7 +48,7 @@ public class Login extends HttpServlet {
 			ctx.setAttribute("Player", player);
 			ctx.setAttribute("Logout",
 					userService.createLogoutURL(req.getRequestURI()));
-			System.out.println("ERR" + req.getAttribute("Err"));
+			logger.info("ERR" + req.getAttribute("Err"));
 			if (req.getAttribute("Err") == null) {
 				ctx.setAttribute("Err", 0);
 				resp.sendRedirect("pages/STLBetApplication.jsp");

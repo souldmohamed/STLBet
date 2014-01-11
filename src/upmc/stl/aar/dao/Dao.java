@@ -3,6 +3,7 @@ package upmc.stl.aar.dao;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public enum Dao {
 	 * @param termDate		- end date for the bet
 	 */
 	public void addBet(String userId, String playerEmail, String type,
-			float quantity, float rate, String currency, Date betDate,
+			int quantity, float rate, String currency, Date betDate,
 			String term, Date termDate) {
 		logger.info("user Id :" + userId + " add bet .....");
 		synchronized (this) {
@@ -153,7 +154,7 @@ public enum Dao {
 					.createQuery("select p from Player p where p.playerId = :playerId");
 			q.setParameter("playerId", playerId);
 			Player p = (Player) q.getSingleResult();
-			System.out.println(p.getBalance());
+			logger.info(""+p.getBalance()+"");
 			synchronized (this) {
 				// Protective check to prevent abuse.
 				if (p.isEligible())
@@ -162,7 +163,7 @@ public enum Dao {
 				p.setEligible(Boolean.FALSE);
 				}
 			}
-			System.out.println(p.getBalance());
+			logger.info(""+p.getBalance()+"");
 			em.persist(p);
 		} finally {
 			em.close();
@@ -251,10 +252,10 @@ public enum Dao {
 				Query q = em.createQuery("select p from CurrencyRates p ");
 				List<CurrencyRates> lrates = q.getResultList();
 				if (lrates != null && lrates.isEmpty()) {
-					System.out.println("....created");
+					logger.info("....created");
 					rates = new CurrencyRates(new Text(""));
 				} else {
-					System.out.println("....updated");
+					logger.info("....updated");
 					rates = lrates.get(0);
 				}
 
@@ -288,7 +289,7 @@ public enum Dao {
 
 			for (ProductBet bet : bets) {
 
-				System.out.println("bet ...");
+				logger.info("bet ...");
 				Player player = getPlayer(bet.getPlayerId(), "");
 
 				tr = em.getTransaction();
@@ -305,9 +306,9 @@ public enum Dao {
 					String sTermRate = RatesParser.getCurrencyRate(bet
 							.getCurrency());
 
-					System.out.println("sQuantity=" + sQuantity);
-					System.out.println("sBetRate=" + sBetRate);
-					System.out.println("sTermRate=" + sTermRate);
+					logger.info("sQuantity=" + sQuantity);
+					logger.info("sBetRate=" + sBetRate);
+					logger.info("sTermRate=" + sTermRate);
 
 					Float quantity = Float.valueOf(sQuantity);
 					Float betRate = Float.valueOf(sBetRate);
@@ -316,24 +317,28 @@ public enum Dao {
 					bet.setTermRate(sTermRate);
 					int res = 0;
 					if (bet.getType().equals("Call")) {
-						System.out.println("call");
+						logger.info("call");
 						res = Math.round(quantity * (termRate - betRate));
 						if (termRate >= betRate) {
-							System.out.println("gain +" + res);
-							bet.setStatus("Gain : " + res);
+							logger.info("Gain" + res);
+							bet.setScore(res);
+							bet.setStatus("Gain");
 						} else {
-							System.out.println("loss -" + res);
-							bet.setStatus("Loss : " + res);
+							logger.info("Loss " + res);
+							bet.setScore(res);
+							bet.setStatus("Loss");
 						}
 					} else if (bet.getType().equals("Put")) {
-						System.out.println("put");
+						logger.info("put");
 						res = Math.round(quantity * (betRate - termRate));
 						if (termRate <= betRate) {
-							System.out.println("gain +" + res);
-							bet.setStatus("Gain : " + res);
+							logger.info("Gain "  + res);
+							bet.setScore(res);
+							bet.setStatus("Gain");
 						} else {
-							System.out.println("loss -" + res);
-							bet.setStatus("Loss : " + res);
+							logger.info("Loss " + res);
+							bet.setScore(res);
+							bet.setStatus("Loss");
 						}
 					}
 					player.setBalance(player.getBalance() + res);
@@ -359,7 +364,7 @@ public enum Dao {
 	 */
 	@SuppressWarnings("unchecked")
 	private void updateBalance(Player player) {
-		System.out.println("updateBalance :" + player.getBalance());
+		logger.info("updateBalance :" + player.getBalance());
 		synchronized (this) {
 			EntityManager em = EMFService.get().createEntityManager();
 			try {
@@ -377,7 +382,38 @@ public enum Dao {
 			}
 		}
 	}
-
+    
+	/**
+	 * This method retreive scors of a player in descreasing order
+	 * @param playerId
+	 * @return
+	 */
+	public List<Float> getPlayerScores(String playerId){
+		
+		List<Float> list = new ArrayList<Float>();
+		List<Float> result = new ArrayList<Float>();
+		
+		synchronized (this) {
+			EntityManager em = EMFService.get().createEntityManager();
+			try {
+				Query q = em
+						.createQuery("select p.score from ProductBet p where p.playerId = :playerId  and p.status <> 'Waiting' ");
+				q.setParameter("playerId", playerId);
+				list = (List<Float>)q.getResultList();	
+			} finally {
+				em.close();
+			}
+		}
+		
+		if(list != null) {
+		    result.addAll(list);
+		    Collections.sort(result);
+			Collections.reverse(result);
+		}
+		
+		return result;
+	}
+	
 	/**
 	 * Sleep method
 	 */

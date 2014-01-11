@@ -21,7 +21,7 @@ public class ProductBet {
 
 	private String playerId;
 	private String type;
-	private float quantity;
+	private int quantity;
 	private String currency;
 	private float rate;
 	private Date betDate;
@@ -29,6 +29,7 @@ public class ProductBet {
 	private Date termDate;
 	private String termRate;
 	private String status;
+	private float score;
 
 	/**
 	 * Bet constructor
@@ -43,7 +44,7 @@ public class ProductBet {
 	 * @param termRate	- String
 	 * @param status	- String
 	 */
-	public ProductBet(String playerId, String type, float quantity,
+	public ProductBet(String playerId, String type, int quantity,
 			String currency, float rate, Date betDate, String term,Date termDate,String termRate,
 			String status) {
 		super();
@@ -87,7 +88,7 @@ public class ProductBet {
 	 * Getter for bet quantity
 	 * @return float
 	 */
-	public float getQuantity() {
+	public int getQuantity() {
 		return quantity;
 	}
 
@@ -95,7 +96,7 @@ public class ProductBet {
 	 * Setter for bet quantity
 	 * @param quantity float
 	 */
-	public void setQuantity(float quantity) {
+	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
 
@@ -233,6 +234,22 @@ public class ProductBet {
 	 */
 	public void setTermRate(String termRate) {
 		this.termRate = termRate;
+	}
+    
+	/**
+	 * Getter for score of bet 
+	 * @return float
+	 */
+	public float getScore() {
+		return score;
+	}
+    
+	/**
+	 * Setter for score of bet
+	 * @param score float
+	 */
+	public void setScore(float score) {
+		this.score = score;
 	}
 	
 }

@@ -1,21 +1,26 @@
 package upmc.stl.aar.utils;
 
 import java.util.Date;
+import java.util.logging.Logger;
 
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
+
 import upmc.stl.aar.dao.Dao;
 import upmc.stl.aar.model.CurrencyRates;
+import upmc.stl.aar.servlet.GetCurrenciesCron;
 
 public class RatesParser {
-
+    
+	private final static Logger logger = Logger.getLogger(RatesParser.class.getName());
+	
 	/**
 	 * Retrieves rate of currency passed as a parameter
 	 * @param String
 	 * @return String
 	 */
 	public static String getCurrencyRate(String currency) {
-		System.out.println("getCurrencyRate currency:"+currency);
+		logger.info("getCurrencyRate currency:"+currency);
 		String result = null;
 		try{
 			Dao DAO = Dao.INSTANCE;
@@ -26,10 +31,10 @@ public class RatesParser {
 				result = rates.getString(currency);
 			}
 		}catch(JSONException e){
-			System.out.println("Parsing error ...");
+			logger.info("Parsing error ...");
 			e.printStackTrace();
 		}
-		System.out.println("getCurrencyRate result:"+result);
+		logger.info("getCurrencyRate result:"+result);
 		return result;
 	}
 	
@@ -38,7 +43,7 @@ public class RatesParser {
 	 * @return Date
 	 */
 	public static Date getCurrencyRateTimestamp() {
-		System.out.println("getCurrencyRateTimestamp...");
+		logger.info("getCurrencyRateTimestamp...");
 		Date result = null;
 		try{
 			Dao DAO = Dao.INSTANCE;
@@ -48,10 +53,10 @@ public class RatesParser {
 				result = new Date(jo.getLong("timestamp")*1000);
 			}
 		}catch(JSONException e){
-			System.out.println("Parsing error ...");
+			logger.info("Parsing error ...");
 			e.printStackTrace();
 		}
-		System.out.println("getCurrencyRate result:"+result);
+		logger.info("getCurrencyRate result:"+result);
 		return result;
 	}
 }
