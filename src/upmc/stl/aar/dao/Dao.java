@@ -33,6 +33,21 @@ public enum Dao {
 
 	private final static Logger logger = Logger.getLogger(Dao.class.getName());
 
+	/**
+	 * Method called when the player creates a bet. 
+	 * Creates a bet and persists it into the database. 
+	 * Also sends a mail to the player to notify him of his bet.
+	 * 	
+	 * @param userId 		- player ID
+	 * @param playerEmail	- player Email
+	 * @param type			- put or call option
+	 * @param quantity		- quantity of currency 
+	 * @param rate			- rate at which the player want to buy/sell
+	 * @param currency		- currency involved
+	 * @param betDate		- time the bet was registered
+	 * @param term			- duration of bet selected
+	 * @param termDate		- end date for the bet
+	 */
 	public void addBet(String userId, String playerEmail, String type,
 			float quantity, float rate, String currency, Date betDate,
 			String term, Date termDate) {
@@ -54,6 +69,11 @@ public enum Dao {
 		waitforrefresh();
 	}
 
+	/**
+	 * Method called to retire a bet from the list after it's gain has been evaluated
+	 * 
+	 * @param id	- Bet id 
+	 */
 	public void removeBet(long id) {
 		EntityManager em = EMFService.get().createEntityManager();
 		try {
@@ -64,6 +84,15 @@ public enum Dao {
 		}
 	}
 
+	/**
+	 * Searches for a player based on his id. 
+	 * If the player does not yet exist in the database, he is persisted with his email.
+	 * 
+	 * 
+	 * @param playerId		- Player Id
+	 * @param playerEmail	- Player Email
+	 * @return an instance of the Player
+	 */
 	@SuppressWarnings("unchecked")
 	public Player getPlayer(String playerId, String playerEmail) {
 		Player player = null;
@@ -88,9 +117,9 @@ public enum Dao {
 	}
 
 	/**
+	 * Method called once per day by the cron at midnight. 
+	 * Renders every player eligible for a daily credit of 500 USD
 	 * 
-	 * 
-	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	public void creditUsers() {
@@ -111,6 +140,12 @@ public enum Dao {
 		}
 	}
 
+	/**
+	 * Method called when player clicks on the button.
+	 * Credits player 500 USD and turns false the isEligible property of this player 
+	 * 
+	 * @param playerId
+	 */
 	public void addDailyGain(String playerId) {
 		EntityManager em = EMFService.get().createEntityManager();
 		try {
@@ -120,8 +155,12 @@ public enum Dao {
 			Player p = (Player) q.getSingleResult();
 			System.out.println(p.getBalance());
 			synchronized (this) {
+				// Protective check to prevent abuse.
+				if (p.isEligible())
+				{
 				p.addBalance(new Float("500"));
 				p.setEligible(Boolean.FALSE);
+				}
 			}
 			System.out.println(p.getBalance());
 			em.persist(p);
@@ -131,9 +170,10 @@ public enum Dao {
 	}
 
 	/**
+	 * Retrieves the list of current bets running for this player.
 	 * 
-	 * @param playerId
-	 * @return
+	 * @param playerId - player those id we retrieve.
+	 * @return the list of bets that are waiting for the player
 	 */
 	@SuppressWarnings("unchecked")
 	public List<ProductBet> getBets(String playerId) {
@@ -150,6 +190,12 @@ public enum Dao {
 		return bets;
 	}
 
+	/**
+	 * Retrieves the historic list of player bets (all those that are completed).  
+	 * 
+	 * @param playerId
+	 * @return the list of bets that have been completed for player playerId
+	 */
 	@SuppressWarnings("unchecked")
 	public List<ProductBet> getHistoryBets(String playerId) {
 		EntityManager em = EMFService.get().createEntityManager();
@@ -165,6 +211,11 @@ public enum Dao {
 		return bets;
 	}
 
+	/**
+	 * Retrieves the rate of all currencies stored in the database.
+	 *  
+	 * @return Text field representing the JSON response received by the API
+	 */
 	@SuppressWarnings("unchecked")
 	public CurrencyRates getCurrencyRates() {
 		CurrencyRates rates = null;
@@ -185,6 +236,12 @@ public enum Dao {
 		return rates;
 	}
 
+	/**
+	 * Persists currency rates into the database. 
+	 * Called by the cron to update currency rates in the database
+	 * 
+	 * @param p_rates currency in JSON format 
+	 */
 	@SuppressWarnings("unchecked")
 	public void saveCurrencyRates(String p_rates) {
 		CurrencyRates rates = null;
@@ -209,6 +266,10 @@ public enum Dao {
 		}
 	}
 
+	/**
+	 * Method called by scheduled cron task. Calculates the gain/loss 
+	 * for every bet those termination date has expired
+	 */
 	@SuppressWarnings("unchecked")
 	public void calculateGain() {
 
@@ -289,8 +350,15 @@ public enum Dao {
 		waitforrefresh();
 	}
 
+	
+	/**
+	 * Internal method called by CalculateGain. 
+	 * Updates player balance based on bet outcome.
+	 * 
+	 * @param player
+	 */
 	@SuppressWarnings("unchecked")
-	public void updateBalance(Player player) {
+	private void updateBalance(Player player) {
 		System.out.println("updateBalance :" + player.getBalance());
 		synchronized (this) {
 			EntityManager em = EMFService.get().createEntityManager();
@@ -310,6 +378,9 @@ public enum Dao {
 		}
 	}
 
+	/**
+	 * Sleep method
+	 */
 	private void waitforrefresh() {
 		try {
 			Thread.sleep(100);

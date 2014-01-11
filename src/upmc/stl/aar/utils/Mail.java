@@ -16,6 +16,11 @@ import upmc.stl.aar.model.ProductBet;
 
 public class Mail {
 	
+	/**
+	 * Sends a mail to the player updating him about his current bets 
+	 * @param player Player
+	 * @param bet	 ProductBet
+	 */
 	public static void sendMail(Player player, ProductBet bet){
 		
 		try {
@@ -42,7 +47,8 @@ public class Mail {
             		+ bet.getTerm() 
             		+ " and therefore it will end on " 
             		+ bet.getTermDate() 
-            		+ ".\n\nThank you for your support. We hope to see you again soon\n\nGet back to the website : http://m2stlbetapp.appspot.com/");
+            		+ ".\n\nThank you for your support. We hope to see you again soon" 
+            		+ "\n\nGet back to the website : http://m2stlbetapp.appspot.com/");
             Transport.send(msg);
 		} catch (MessagingException e) {
             e.printStackTrace();

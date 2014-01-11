@@ -12,6 +12,9 @@ import com.google.appengine.api.users.UserServiceFactory;
 
 import upmc.stl.aar.dao.Dao;
 
+/**
+ * Servlet called to credit user with daily amount of USD. Second check iterated in addDailyGain method for security
+ */
 public class DailyGain extends HttpServlet {
 
 	/**
@@ -27,10 +30,8 @@ public class DailyGain extends HttpServlet {
 		UserService userService = UserServiceFactory.getUserService();
 		
 		if (req.getUserPrincipal() != null) {
-			System.out.println("Before" );
 			User user = userService.getCurrentUser();
 			dao.addDailyGain(user.getUserId());
-			System.out.println("After");
 		}
 		
 		resp.sendRedirect("login");

@@ -13,6 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import upmc.stl.aar.dao.Dao;
 
+/**
+ * Servlet used by scheduled cron task to update currency values. 
+ * Contains API key. Is protected from intrusive access by authorization constraint in web.xml
+ */
 public class GetCurrenciesCron extends HttpServlet {
 	
 	private final String url = "http://openexchangerates.org/api/latest.json?app_id=7b689b62ead6401a81006d181eb87730";
@@ -42,9 +46,6 @@ public class GetCurrenciesCron extends HttpServlet {
 		// optional default is GET
 		con.setRequestMethod("GET");
 	 
-		//add request header
-		//con.setRequestProperty("User-Agent", USER_AGENT);
-	 
 		int responseCode = con.getResponseCode();
 		System.out.println("\nSending 'GET' request to URL : " + url);
 		System.out.println("Response Code : " + responseCode);
@@ -57,9 +58,6 @@ public class GetCurrenciesCron extends HttpServlet {
 			response.append(inputLine);
 		}
 		in.close();
-	 
-		//print result
-		System.out.println(response.toString());
 			
 		return response.toString(); 
 	}

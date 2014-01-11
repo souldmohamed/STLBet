@@ -9,6 +9,11 @@ import upmc.stl.aar.model.CurrencyRates;
 
 public class RatesParser {
 
+	/**
+	 * Retrieves rate of currency passed as a parameter
+	 * @param String
+	 * @return String
+	 */
 	public static String getCurrencyRate(String currency) {
 		System.out.println("getCurrencyRate currency:"+currency);
 		String result = null;
@@ -28,7 +33,10 @@ public class RatesParser {
 		return result;
 	}
 	
-	
+	/**
+	 * Retrieves currency last update timestamp. 
+	 * @return Date
+	 */
 	public static Date getCurrencyRateTimestamp() {
 		System.out.println("getCurrencyRateTimestamp...");
 		Date result = null;

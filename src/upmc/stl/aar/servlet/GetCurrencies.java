@@ -1,11 +1,7 @@
 package upmc.stl.aar.servlet;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import upmc.stl.aar.dao.Dao;
 
+/**
+ * Servlet called to retrieve currency rates from the database.
+ * Called by ajax method
+ */
 public class GetCurrencies extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;

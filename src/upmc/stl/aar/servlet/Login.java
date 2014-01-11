@@ -17,6 +17,9 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
+/**
+ * Login servlet. Redirect to application page
+ */
 @SuppressWarnings("serial")
 public class Login extends HttpServlet {
 

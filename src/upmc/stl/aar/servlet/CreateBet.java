@@ -22,6 +22,9 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
+/**
+ * Servlet called to create a bet
+ */
 @SuppressWarnings("serial")
 public class CreateBet extends HttpServlet {
 
