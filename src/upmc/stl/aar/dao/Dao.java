@@ -62,6 +62,8 @@ public enum Dao {
 						quantity, currency, rate, new Date(), term2, termDate,
 						null, "Waiting");
 				em.persist(bet);
+				player.removeBalance(quantity * rate); 
+				updateBalance(player);
 				Mail.sendMail(player, bet);
 			} finally {
 				em.close();
@@ -341,7 +343,7 @@ public enum Dao {
 							bet.setStatus("Loss");
 						}
 					}
-					player.setBalance(player.getBalance() + res);
+					player.setBalance(player.getBalance() + (quantity * betRate) + res);
 					updateBalance(player);
 
 				}
