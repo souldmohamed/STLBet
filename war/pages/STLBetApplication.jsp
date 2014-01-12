@@ -108,7 +108,8 @@
 						<div class="alert alert-dismissable alert-danger col-md-10">
 							<button type="button" class="close" data-dismiss="alert"
 								aria-hidden="true">&times;</button>
-							Quantity and rates need to have a number format (separator has to be a dot).
+							Quantity and rates need to have a number format (separator has to
+							be a dot).
 						</div>
 					</c:when>
 				</c:choose>
@@ -358,7 +359,14 @@
 											<td>${bet.termDate}</td>
 											<td>${bet.termRate}</td>
 											<td>${bet.score}</td>
-											<td>${bet.status}</td>
+											<td><c:choose>
+													<c:when test="${bet.status == 'Gain'}">
+														<button class="btn btn-success col-md-12 disabled">${bet.status}</button>
+													</c:when>
+													<c:when test="${bet.status == 'Loss'}">
+														<button class="btn btn-danger col-md-12 disabled">${bet.status}</button>
+													</c:when>
+												</c:choose></td>
 										</tr>
 									</c:forEach>
 								</table>
