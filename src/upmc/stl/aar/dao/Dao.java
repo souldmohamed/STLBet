@@ -42,6 +42,7 @@ public enum Dao {
 	 * @param userId 		- player ID
 	 * @param playerEmail	- player Email
 	 * @param type			- put or call option
+	 * @param trate			- current rate of currency
 	 * @param quantity		- quantity of currency 
 	 * @param rate			- rate at which the player want to buy/sell
 	 * @param currency		- currency involved
@@ -49,7 +50,7 @@ public enum Dao {
 	 * @param term			- duration of bet selected
 	 * @param termDate		- end date for the bet
 	 */
-	public void addBet(String userId, String playerEmail, String type,
+	public void addBet(String userId, String playerEmail, String type, float trate,
 			int quantity, float rate, String currency, Date betDate,
 			String term, Date termDate) {
 		logger.info("user Id :" + userId + " add bet .....");
@@ -62,7 +63,7 @@ public enum Dao {
 						quantity, currency, rate, new Date(), term2, termDate,
 						null, "Waiting");
 				em.persist(bet);
-				player.removeBalance(quantity * rate); 
+				player.removeBalance(Math.round(quantity / rate)); 
 				updateBalance(player);
 				Mail.sendMail(player, bet);
 			} finally {
@@ -320,7 +321,7 @@ public enum Dao {
 					int res = 0;
 					if (bet.getType().equals("Call")) {
 						logger.info("call");
-						res = Math.round(quantity * (termRate - betRate));
+						res = Math.round((quantity / termRate) - (quantity / betRate));
 						if (termRate >= betRate) {
 							logger.info("Gain" + res);
 							bet.setScore(res);
@@ -332,7 +333,7 @@ public enum Dao {
 						}
 					} else if (bet.getType().equals("Put")) {
 						logger.info("put");
-						res = Math.round(quantity * (betRate - termRate));
+						res = Math.round((quantity / betRate) - (quantity / termRate));
 						if (termRate <= betRate) {
 							logger.info("Gain "  + res);
 							bet.setScore(res);
@@ -342,8 +343,9 @@ public enum Dao {
 							bet.setScore(res);
 							bet.setStatus("Loss");
 						}
+						
 					}
-					player.setBalance(player.getBalance() + (quantity * betRate) + res);
+					player.addBalance(quantity / betRate);
 					updateBalance(player);
 
 				}

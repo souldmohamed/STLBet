@@ -106,12 +106,12 @@ public class CreateBet extends HttpServlet {
 
 			// Check on balance
 			Float bal = Float.valueOf(balance);
-			if (bal < (cquantity * Math.abs(crate - trate)))
+			if (bal < (cquantity / Math.abs(crate - trate)))
 			{
 				throw new InsufficientBalanceException();
 			}
 			
-			Dao.INSTANCE.addBet(user.getUserId(), user.getEmail(), type,
+			Dao.INSTANCE.addBet(user.getUserId(), user.getEmail(), type, trate,  
 					cquantity, crate, currency, betDate, term, termDate);
 
 			resp.sendRedirect("login");

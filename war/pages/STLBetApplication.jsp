@@ -178,12 +178,12 @@
 								<div class="panel-body">
 									<table class="table table-bordered">
 										<tr class="light-brown">
-											<td>GBP</td>
-											<td>JPY</td>
-											<td>EUR</td>
-											<td>CNY</td>
-											<td>AUD</td>
-											<td>AED</td>
+											<td class="col-md-2">GBP</td>
+											<td class="col-md-2">JPY</td>
+											<td class="col-md-2">EUR</td>
+											<td class="col-md-2">CNY</td>
+											<td class="col-md-2">AUD</td>
+											<td class="col-md-2">AED</td>
 										</tr>
 										<tr>
 											<td id="GBP"></td>
