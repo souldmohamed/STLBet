@@ -44,7 +44,7 @@ public class Login extends HttpServlet {
 			List<ProductBet> historybets = dao.getHistoryBets(user.getUserId());
 			Player player = dao.getPlayer(user.getUserId(), user.getEmail());
 			List<Float> gains = fillScores(dao.getBestGainScores());
-			List<Float> losses = fillScores(dao.getBestGainScores());
+			List<Float> losses = fillScores(dao.getBestLossScores());
 
 			ctx.setAttribute("Cbets", bets);
 			ctx.setAttribute("Hbets", historybets);

@@ -397,7 +397,7 @@ public enum Dao {
 			EntityManager em = EMFService.get().createEntityManager();
 			try {
 				Query q = em
-						.createQuery("select p.score from ProductBet p where p.status == 'Gain'");
+						.createQuery("select p.score from ProductBet p where p.status = 'Gain'");
 				q.setMaxResults(5);
 				list = (List<Float>) q.getResultList();	
 			} finally {
@@ -428,7 +428,7 @@ public enum Dao {
 			EntityManager em = EMFService.get().createEntityManager();
 			try {
 				Query q = em
-						.createQuery("select p.score from ProductBet p where p.status == 'Loss'");
+						.createQuery("select p.score from ProductBet p where p.status = 'Loss'");
 				q.setMaxResults(5);
 				list = (List<Float>) q.getResultList();	
 			} finally {

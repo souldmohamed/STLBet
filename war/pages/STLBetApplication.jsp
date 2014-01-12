@@ -88,7 +88,7 @@
 							<ul class="nav bs-sidenav orange">
 								<li><a href="#bhome" data-toggle="tab">Home</a></li>
 								<li><a href="#bhelp" data-toggle="tab">How to play ?</a></li>
-								<li><a href="#bconc" data-toggle="tab">Currency Concepts</a></li>
+								<li><a href="#bconc" data-toggle="tab">Definitions</a></li>
 								<li><a href="#bcurrent" data-toggle="tab">My bets</a></li>
 								<li><a href="#bhistory" data-toggle="tab">History</a></li>
 							</ul>
