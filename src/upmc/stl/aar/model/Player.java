@@ -20,7 +20,7 @@ public class Player {
 
 	// Player balance
 	private float balance;
-
+	
 	/**
 	 * Player constructor
 	 * @param playerId - String 
@@ -116,12 +116,12 @@ public class Player {
 	}
 	
 	/**
-	 * Substract method for player balance
+	 * Substract method for player  balance
 	 * @param amount - float
 	 */
 	public void removeBalance(float amount)
 	{
 		this.balance -= amount;
 	}
-
+    
 }

@@ -404,12 +404,12 @@
 									currency, he/she is somehow betting on the reduction of this
 									currency's rate on due time. His/her gain/loss will be
 									determined at that time by the formula :</p>
-								<pre> quantity * (bet rate - term rate)</pre>
+								<pre> (quantity / term rate) * (bet rate - term rate)</pre>
 								<p>On the other hand, if the player creates a call (buying
 									option) on a currency, he/she is betting that this currency's
 									rate will increase on due time. His/her gain/loss will be
 									determined at that time by the formula :</p>
-								<pre> quantity * (term rate - bet rate)</pre>
+								<pre> (quantity / term rate) * (term rate - bet rate)</pre>
 								<p>In both cases, bet rate is represents the rate chosen by
 									the player when the bet was created and term rate the effective
 									rate of the currency when the bet ended.</p>

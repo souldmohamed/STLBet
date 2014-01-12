@@ -103,14 +103,8 @@ public class CreateBet extends HttpServlet {
 				cal.add(Calendar.DAY_OF_MONTH, 3);
 				termDate = cal.getTime();
 			}
-
-			// Check on balance
-			Float bal = Float.valueOf(balance);
-			if (bal < (cquantity / Math.abs(crate - trate)))
-			{
-				throw new InsufficientBalanceException();
-			}
-			
+           
+			//add Bet
 			Dao.INSTANCE.addBet(user.getUserId(), user.getEmail(), type, trate,  
 					cquantity, crate, currency, betDate, term, termDate);
 

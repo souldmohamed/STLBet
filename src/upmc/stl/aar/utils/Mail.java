@@ -30,7 +30,7 @@ public class Mail {
 			Message msg = new MimeMessage(session);
             msg.setFrom(new InternetAddress("admin@m2stlbetapp.appspotmail.com", "m2stlbetapp"));
             msg.addRecipient(Message.RecipientType.TO,new InternetAddress(player.getPlayerEmail(), ""));
-            msg.setSubject("[M2stlbetapp] Bet Information Update (" + bet.getQuantity() + ") " + bet.getStatus());
+            msg.setSubject("[M2stlbetapp] Bet Information Update ("+ " ("+ bet.getBetDate()+") " + bet.getQuantity() + " "+ bet.getCurrency()  +") " + bet.getStatus() );
             msg.setText("Thank you for playing on the U.G.L.Y Bet.ty application !"
             		+ "\n\nHere are some update information about the recent " 
             		+ bet.getType()

@@ -12,6 +12,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import javax.servlet.ServletContext;
 
+import upmc.stl.aar.exceptions.InsufficientBalanceException;
 import upmc.stl.aar.model.CurrencyRates;
 import upmc.stl.aar.model.Player;
 import upmc.stl.aar.model.ProductBet;
@@ -49,22 +50,34 @@ public enum Dao {
 	 * @param betDate		- time the bet was registered
 	 * @param term			- duration of bet selected
 	 * @param termDate		- end date for the bet
+	 * @throws InsufficientBalanceException 
 	 */
 	public void addBet(String userId, String playerEmail, String type, float trate,
 			int quantity, float rate, String currency, Date betDate,
-			String term, Date termDate) {
+			String term, Date termDate) throws InsufficientBalanceException {
 		logger.info("user Id :" + userId + " add bet .....");
 		synchronized (this) {
 			EntityManager em = EMFService.get().createEntityManager();
 			String term2 = term.replace("+", " ");
 			try {
 				Player player = getPlayer(userId, playerEmail);
+				
+				// Check on balance
+				Float bal = player.getBalance();
+				if (bal < quantity ){
+					logger.warning("virtual balance :"+bal +" < "+ quantity);
+					throw new InsufficientBalanceException();
+				}else{
+					logger.warning("remove virtual balance :"+bal +" - "+ quantity);
+					player.setBalance(bal-quantity); 
+					updatePlayer(player);
+				}
+				
 				ProductBet bet = new ProductBet(player.getPlayerId(), type,
 						quantity, currency, rate, new Date(), term2, termDate,
 						null, "Waiting");
 				em.persist(bet);
-				player.removeBalance(Math.round(quantity / rate)); 
-				updateBalance(player);
+
 				Mail.sendMail(player, bet);
 			} finally {
 				em.close();
@@ -321,7 +334,7 @@ public enum Dao {
 					int res = 0;
 					if (bet.getType().equals("Call")) {
 						logger.info("call");
-						res = Math.round((quantity / termRate) - (quantity / betRate));
+						res= Math.round((quantity/termRate)*(Math.abs(termRate - betRate)));
 						if (termRate >= betRate) {
 							logger.info("Gain" + res);
 							bet.setScore(res);
@@ -332,8 +345,8 @@ public enum Dao {
 							bet.setStatus("Loss");
 						}
 					} else if (bet.getType().equals("Put")) {
-						logger.info("put");
-						res = Math.round((quantity / betRate) - (quantity / termRate));
+						logger.info("put");  
+						res= Math.round((quantity/termRate)*(Math.abs(termRate - betRate)));
 						if (termRate <= betRate) {
 							logger.info("Gain "  + res);
 							bet.setScore(res);
@@ -345,9 +358,8 @@ public enum Dao {
 						}
 						
 					}
-					player.addBalance(quantity / betRate);
-					updateBalance(player);
-
+					player.addBalance(quantity+res);
+					updatePlayer(player);
 				}
 				em.persist(bet);
 				tr.commit();
@@ -367,7 +379,7 @@ public enum Dao {
 	 * @param player
 	 */
 	@SuppressWarnings("unchecked")
-	private void updateBalance(Player player) {
+	private void updatePlayer(Player player) {
 		logger.info("updateBalance :" + player.getBalance());
 		synchronized (this) {
 			EntityManager em = EMFService.get().createEntityManager();
@@ -377,6 +389,7 @@ public enum Dao {
 				q.setParameter("playerId", player.getPlayerId());
 				List<Player> players = q.getResultList();
 				if (players != null && !players.isEmpty()) {
+					logger.info("player to update:"+players.get(0).getPlayerEmail());
 					Player player_to_update = players.get(0);
 					player_to_update.setBalance(player.getBalance());
 					em.persist(player_to_update);
