@@ -315,7 +315,14 @@
 									</tr>
 									<c:forEach items="${ Cbets }" var="bet">
 										<tr>
-											<td>${bet.type}</td>
+											<td><c:choose>
+													<c:when test="${bet.type == 'Put'}">
+														<button class="btn btn-info col-md-12 disabled">${bet.type}</button>
+													</c:when>
+													<c:when test="${bet.type == 'Call'}">
+														<button class="btn btn-warning col-md-12 disabled">${bet.type}</button>
+													</c:when>
+												</c:choose></td>
 											<td>${bet.quantity}</td>
 											<td>${bet.currency}</td>
 											<td>${bet.rate}</td>
@@ -350,7 +357,14 @@
 									</tr>
 									<c:forEach items="${ Hbets }" var="bet">
 										<tr>
-											<td>${bet.type}</td>
+											<td><c:choose>
+													<c:when test="${bet.type == 'Put'}">
+														<button class="btn btn-info col-md-12 disabled">${bet.type}</button>
+													</c:when>
+													<c:when test="${bet.type == 'Call'}">
+														<button class="btn btn-warning col-md-12 disabled">${bet.type}</button>
+													</c:when>
+												</c:choose></td>
 											<td>${bet.quantity}</td>
 											<td>${bet.currency}</td>
 											<td>${bet.rate}</td>
