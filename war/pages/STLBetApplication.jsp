@@ -88,6 +88,7 @@
 							<ul class="nav bs-sidenav orange">
 								<li><a href="#bhome" data-toggle="tab">Home</a></li>
 								<li><a href="#bhelp" data-toggle="tab">How to play ?</a></li>
+								<li><a href="#bconc" data-toggle="tab">Currency Concepts</a></li>
 								<li><a href="#bcurrent" data-toggle="tab">My bets</a></li>
 								<li><a href="#bhistory" data-toggle="tab">History</a></li>
 							</ul>
@@ -97,21 +98,20 @@
 
 				<!-- Message d'erreur -->
 				<c:choose>
-				<c:when test="${ Err == 1 }">
-					<div class="tab-content col-md-10">
-						<div class="panel panel-danger">
-							<div class="panel-body alert-danger">Current balance
-								insufficient, please add credits.</div>
+					<c:when test="${ Err == 1 }">
+						<div class="alert alert-danger alert-dismissable col-md-10">
+							<button type="button" class="close" data-dismiss="alert"
+								aria-hidden="true">&times;</button>
+							Current balance insufficient, please add credits.
 						</div>
-					</div>
-				</c:when>
-				<c:when test="${ Err == 2 }">
-					<div class="tab-content col-md-10">
-						<div class="panel panel-danger">
-							<div class="panel-body alert-danger">Quantity and rates need to have a number format.</div>
+					</c:when>
+					<c:when test="${ Err == 2 }">
+						<div class="alert alert-dismissable alert-danger col-md-10">
+							<button type="button" class="close" data-dismiss="alert"
+								aria-hidden="true">&times;</button>
+							Quantity and rates need to have a number format (separator has to be a dot).
 						</div>
-					</div>
-				</c:when>
+					</c:when>
 				</c:choose>
 				<!-- End message d'erreur -->
 
@@ -144,55 +144,28 @@
 						<div class="container col-md-3">
 
 							<div class="panel panel-brown">
-								<div class="panel-heading">Top Scores</div>
+								<div class="panel-heading">Top 5 Gains</div>
 								<div class="panel-body">
 									<table class="table table-bordered">
-									  <%List<Float> scores = Dao.INSTANCE.getPlayerScores(user.getUserId()); %>
-									  
-									  	<%for(int i=0;i<scores.size();i++) {%>
+										<c:forEach var="ind" begin="1" end="5" step="1">
 											<tr>
-												<td class="col-md-3"><%=i+1%>.</td>
-												<td><%=scores.get(i)%></td>
+												<td class="col-md-3">${ ind }.</td>
+												<td>${ Gains[ind - 1] }</td>
 											</tr>
-									 	 <%}%>
-									 	 
-									    	<!-- <tr>
-												<td class="col-md-3">1.</td>
-												<td></td>
-											</tr>
-									    	<tr>
-												<td>2.</td>
-												<td></td>
-											</tr>
+										</c:forEach>
+									</table>
+								</div>
+							</div>
+							<div class="panel panel-brown">
+								<div class="panel-heading">Top 5 Losses</div>
+								<div class="panel-body">
+									<table class="table table-bordered">
+										<c:forEach var="ind" begin="1" end="5" step="1">
 											<tr>
-												<td>3.</td>
-												<td></td>
+												<td class="col-md-3">${ ind }.</td>
+												<td>${ Losses[ind - 1] }</td>
 											</tr>
-											<tr>
-												<td>4.</td>
-												<td></td>
-											</tr>
-											<tr>
-												<td>5.</td>
-												<td></td>
-											</tr>
-											<tr>
-												<td>6.</td>
-												<td></td>
-											</tr>
-											<tr>
-												<td>7.</td>
-												<td></td>
-											</tr>
-											<tr>
-												<td>8.</td>
-												<td></td>
-											</tr>
-											<tr>
-												<td>9.</td>
-												<td></td>
-											</tr> -->
-										
+										</c:forEach>
 									</table>
 								</div>
 							</div>
@@ -211,9 +184,6 @@
 											<td>CNY</td>
 											<td>AUD</td>
 											<td>AED</td>
-											<td>KWD</td>
-											<td>SGD</td>
-											<td>SAR</td>
 										</tr>
 										<tr>
 											<td id="GBP"></td>
@@ -222,14 +192,24 @@
 											<td id="CNY"></td>
 											<td id="AUD"></td>
 											<td id="AED"></td>
-											<td id="KWD"></td>
-											<td id="SGD"></td>
-											<td id="SAR"></td>
 										</tr>
 										<tr class="light-brown">
+											<td>KWD</td>
+											<td>SGD</td>
+											<td>SAR</td>
 											<td>CLF</td>
 											<td>KYD</td>
 											<td>HNL</td>
+										</tr>
+										<tr>
+											<td id="KWD"></td>
+											<td id="SGD"></td>
+											<td id="SAR"></td>
+											<td id="CLF"></td>
+											<td id="KYD"></td>
+											<td id="HNL"></td>
+										</tr>
+										<tr class="light-brown">
 											<td>DOP</td>
 											<td>LKR</td>
 											<td>MRO</td>
@@ -238,9 +218,6 @@
 											<td>BMD</td>
 										</tr>
 										<tr>
-											<td id="CLF"></td>
-											<td id="KYD"></td>
-											<td id="HNL"></td>
 											<td id="DOP"></td>
 											<td id="LKR"></td>
 											<td id="MRO"></td>
@@ -251,10 +228,8 @@
 									</table>
 								</div>
 							</div>
-						</div>
 
-						<!-- Right panel -->
-						<div class="container col-md-9">
+							<!-- Right panel -->
 							<div class="panel panel-brown">
 								<div class="panel-heading">Actions</div>
 								<div class="panel-body">
@@ -314,7 +289,7 @@
 													type="submit" value="Submit" /></td>
 											</tr>
 										</table>
-										<input type="hidden" name="balance" value="${Player.balance }"/>
+										<input type="hidden" name="balance" value="${Player.balance }" />
 									</form>
 								</div>
 							</div>
@@ -393,7 +368,7 @@
 					</div>
 					<!-- End bets history -->
 					<!-- Help -->
-					<div class="tab-pane" id="bhelp">
+					<div class="tab-pane" id="bconc">
 						<div class="panel panel-brown">
 							<div class="panel-heading">About</div>
 							<div class="panel-body">

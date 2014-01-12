@@ -384,11 +384,11 @@ public enum Dao {
 	}
     
 	/**
-	 * This method retreive scors of a player in descreasing order
+	 * This method retrieves top 5 gains
 	 * @param playerId
-	 * @return
+	 * @return List<Float>
 	 */
-	public List<Float> getPlayerScores(String playerId){
+	public List<Float> getBestGainScores(){
 		
 		List<Float> list = new ArrayList<Float>();
 		List<Float> result = new ArrayList<Float>();
@@ -397,9 +397,9 @@ public enum Dao {
 			EntityManager em = EMFService.get().createEntityManager();
 			try {
 				Query q = em
-						.createQuery("select p.score from ProductBet p where p.playerId = :playerId  and p.status <> 'Waiting' ");
-				q.setParameter("playerId", playerId);
-				list = (List<Float>)q.getResultList();	
+						.createQuery("select p.score from ProductBet p where p.status == 'Gain'");
+				q.setMaxResults(5);
+				list = (List<Float>) q.getResultList();	
 			} finally {
 				em.close();
 			}
@@ -409,6 +409,36 @@ public enum Dao {
 		    result.addAll(list);
 		    Collections.sort(result);
 			Collections.reverse(result);
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * This method retrieves top 5 losses
+	 * @param playerId
+	 * @return List<Float>
+	 */
+	public List<Float> getBestLossScores(){
+		
+		List<Float> list = new ArrayList<Float>();
+		List<Float> result = new ArrayList<Float>();
+		
+		synchronized (this) {
+			EntityManager em = EMFService.get().createEntityManager();
+			try {
+				Query q = em
+						.createQuery("select p.score from ProductBet p where p.status == 'Loss'");
+				q.setMaxResults(5);
+				list = (List<Float>) q.getResultList();	
+			} finally {
+				em.close();
+			}
+		}
+		
+		if(list != null) {
+		    result.addAll(list);
+		    Collections.sort(result);
 		}
 		
 		return result;
