@@ -409,7 +409,7 @@
 									option) on a currency, he/she is betting that this currency's
 									rate will increase on due time. His/her gain/loss will be
 									determined at that time by the formula :</p>
-								<pre> (quantity / term rate) * (term rate - bet rate)</pre>
+								<pre> (quantity / term rate) * ((1/term rate) - (1/bet rate))</pre>
 								<p>In both cases, bet rate is represents the rate chosen by
 									the player when the bet was created and term rate the effective
 									rate of the currency when the bet ended.</p>

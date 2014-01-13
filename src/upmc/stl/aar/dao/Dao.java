@@ -334,8 +334,8 @@ public enum Dao {
 					int res = 0;
 					if (bet.getType().equals("Call")) {
 						logger.info("call");
-						res= Math.round((quantity/termRate)*(termRate - betRate));
-						if (termRate >= betRate) {
+						res= Math.round((quantity/termRate)*((1/termRate) - (1/betRate)));
+						if ((1/termRate) >= (1/betRate)) {
 							logger.info("Gain" + res);
 							bet.setScore(res);
 							bet.setStatus("Gain");
