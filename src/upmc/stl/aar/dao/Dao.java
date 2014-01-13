@@ -334,7 +334,7 @@ public enum Dao {
 					int res = 0;
 					if (bet.getType().equals("Call")) {
 						logger.info("call");
-						res= Math.round((quantity/termRate)*(Math.abs(termRate - betRate)));
+						res= Math.round((quantity/termRate)*(termRate - betRate));
 						if (termRate >= betRate) {
 							logger.info("Gain" + res);
 							bet.setScore(res);
@@ -346,7 +346,7 @@ public enum Dao {
 						}
 					} else if (bet.getType().equals("Put")) {
 						logger.info("put");  
-						res= Math.round((quantity/termRate)*(Math.abs(termRate - betRate)));
+						res= Math.round((quantity/termRate)*(betRate - termRate));
 						if (termRate <= betRate) {
 							logger.info("Gain "  + res);
 							bet.setScore(res);
